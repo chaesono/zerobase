@@ -82,3 +82,48 @@ cite는 출처
 - 의미가 없는 끊임없는 `div` 들을 탐색하는 것보다, 의미있는 코드 블록을 찾는 것이 훨씬 쉽습니다.
 - 개발자에게 태그 안에 채워질 데이터 유형을 제안합니다.
 - 의미있는 이름짓기(Semanting naming)는 적절한 사용자 정의 요소 / 구성 요소의 이름짓기를 반영합니다.
+
+# 폼 Form
+
+```html
+<div>
+  <label for="foodname">음식 이름 : </label>
+  <input type="text" name="food" id="foodname" />
+</div>
+
+<div>
+  <label>
+    색깔 :
+    <input type="text" name="color" />
+  </label>
+</div>
+```
+
+- input의 `autocomplete="on"` 속성은 자동완성 기능이 켜집니다.
+- input의 `required` 속성은 무조건 작성해야 할 때 부여하는 속성입니다.
+- button은 input보다 스타일을 적용하기 수월하다.
+
+- label의 자식요소로 input을 쓰게되면 따로 id를 부여하지 않아도 된다.
+
+```html
+<form action="" method="GET">
+  <label for="movie">좋아하는 영화 : </label>
+  <select name="movie" id="movie" required>
+    <option value="">--Please choose an option--</option>
+    <optgroup label="animation">
+      <option value="toystory">토이스토리</option>
+      <option value="zootopia" selected>주토피아</option>
+      <option value="insideout">인사이드아웃</option>
+    </optgroup>
+    <optgroup label="SF">
+      <option value="matrix">매트릭스</option>
+    </optgroup>
+  </select>
+
+  <input type="submit" />
+</form>
+```
+
+- option을 쓸 때 required를 사용하고 싶을때 value를 빈칸으로 두면 required에서 제외 가능하다.
+
+- legend는 fieldset의 첫번째 자식요소여야 합니다.
