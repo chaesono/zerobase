@@ -127,3 +127,88 @@ cite는 출처
 - option을 쓸 때 required를 사용하고 싶을때 value를 빈칸으로 두면 required에서 제외 가능하다.
 
 - legend는 fieldset의 첫번째 자식요소여야 합니다.
+
+# CSS
+
+1. Attribute selector
+
+```html
+<a href="https://example.com" target="_blank"></a>
+```
+
+```css
+/* 1. [attr] */
+a[target] {
+  color: hotpink;
+}
+
+/* 2. [attr=value] */
+a[href="https://example.com"]
+{
+  color: indigo;
+}
+/* 3. [attr^=value] */
+a[href^="http"]: a라는 태그에서 http로 시작하는 애들을 선택 {
+  color: indigo;
+}
+/* 4. [attr$=value] */
+a[href$="http"]: http로 끝나는애들을 선택 {
+  color: indigo;
+}
+/* 5. [attr*=value] */
+a[href*="example"]: example을 가지고만 있으면 선택 {
+  color: indigo;
+}
+```
+
+2. Pseudo-Class Selector
+
+```css
+/* 1. first-child */
+li:first-child {
+  color: green;
+}
+
+/* 2. last-child */
+span:last-child {
+  color: tomato;
+}
+
+/* 3. nth-child */
+li:nth-child(3) {
+  color: pink;
+}
+
+/* 4. first-of-type */
+p:first-of-type {
+  // p형제들 중에 첫 번째
+  color: red;
+}
+
+/* 5. last-of-type */
+/* 6. nth-of-type() */
+
+/* 7. :not() */
+input:not(.pw) {
+  // input을 고르는데 pw를 클래스로 가진 것을 제외한 모든 것을 선택
+  background-color: indianred;
+}
+
+/* 8. link */
+a:link {
+  // 방문한 적 없을 때의 링크 색
+  color: tomato;
+}
+/* 9. visited */
+a:visited {
+  // 방문했던 링크의 색
+}
+
+* link > visited > hover > active 순서로 css를 작성한다.
+/* 10. hover */ : 마우스를 올렸을 때
+/* 11. active */ : 마우스를 클릭했을 때
+/* 12. focus */ : 선택 되었을 때 해당하는 곳의 css 지정
+/* 13. enabled */
+/* 14. disabled */
+/* 15. checked */
+```
