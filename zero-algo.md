@@ -120,3 +120,10 @@ console.log(set.has(10)); // 값이 있으면 true 없으면 false
 set.delete(1);
 set.delete(-1); // 없는 value를 지정하더라도 오류는 없고 별도로 반환하는 것은 없다.
 ```
+
+# 다시 풀어봐야 할 것
+
+47. 기본 문제 풀이 - 무한뺄셈
+48. 요일구하기
+49. 중복 단어 제거 - Map, Set 차이 다시 생각하기
+50. 배열 내 최대값 구하기 : Math.max.apply(null, arr);
