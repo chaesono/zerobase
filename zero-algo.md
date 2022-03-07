@@ -127,3 +127,72 @@ set.delete(-1); // 없는 value를 지정하더라도 오류는 없고 별도로
 48. 요일구하기
 49. 중복 단어 제거 - Map, Set 차이 다시 생각하기
 50. 배열 내 최대값 구하기 : Math.max.apply(null, arr);
+
+# 기본 수학 이론
+
+1. 알고리즘 복잡도
+
+- 시간 복잡도 : 입력 크기의 값에 대해 단위 연산을 몇 번 수행하는지 계산하여, 알고리즘의 수행시간을 평가하는 방법
+- 3가지 점근적 표현볍
+  - O(빅오) : 최악의 상황을 고려하여 성능 측정 결과 표현
+  - 세타 : 평균적인 경우에서의 성능 측정 결과 표현
+  - 오메가 : 최선의 상황일 때의 성능 측정 결과 표현
+- 걸리는 시간
+  - O(log n) = O(1) < O(n) < O(nlogn) < O(N^2) < O(2^n) < O(n!)
+
+2. 경우의 수
+
+- 어떤 사건 혹은 일이 일어날 수 있는 경우의 가짓수를 수로 표현
+- 순열 : 서로 다른 n개의 원소 중에서 r개를 중복 없이 골라 순서에 상관 있게 나열하는 경우의 수
+
+```js
+// 순열 코드를 짜는방법 1. for 문
+// for 문은 순열 개수가 늘어날수록 for문이 늘어나기에 시간복잡도가 크게 증가해 사용하지 않습니다.
+let input = ["a", "b", "c"];
+let count = 0;
+
+function permutation(arr) {
+  // for i -> 첫번째 위치시킬 요소 a, b, c [i, 0, 0]
+  for (let i = 0; i < arr.length; i++) {
+    // for j -> 두번째 index 위치시킬 요소  [i, j, 0]
+    for (let j = 0; j < arr.length; j++) {
+      if (i == j) continue;
+      // for k -> 세번째 index 위치시킬 요소 [i, j, k]
+      for (let k = 0; k < arr.length; k++) {
+        if (i == k) continue;
+        if (j == k) continue;
+
+        console.log(arr[i], arr[j], arr[k]);
+      }
+    }
+  }
+}
+permutation(input);
+console.log(count);
+
+// 순열 코드를 짜는 방법 2. 재귀
+let input = ["a", "b", "c"];
+let count = 0;
+
+function permutation(arr, s, r) {
+  // 1. 재귀함수를 멈춰야할 조건
+  if (s == r) {
+    count++;
+    console.log(arr);
+    return;
+  }
+
+  // 2. 재귀를 돌면서 변경되어야 될 부분 / 메인로직
+  for (let i = s; i < arr.length; i++) {
+    [arr[s], arr[i]] = [arr[i], arr[s]]; // swap
+    permutation(arr, s + 1, r)[(arr[s], arr[i])] = [arr[i], arr[s]]; // 원상복귀
+  }
+}
+
+permutation(input, 0, 2);
+console.log(count);
+```
+
+- 조합 : 서로 다른 n개의 원소 중에서 r를 중복 없이 골라 순서에 상관 없이 나열하는 경우의 수
+
+3. 점화식

@@ -212,3 +212,125 @@ a:visited {
 /* 14. disabled */
 /* 15. checked */
 ```
+
+3. Pseudo-Element Selector(가상 요소 선택자)
+
+- 가상 요소 선택자는 selector::~~ 더블 콜론을 쓴다.
+  하지만 콜론을 하나도 사용해도 되긴하지만 가상 클래스 선택자와 구분하기 위해 더블 콜론으로 작성한다.
+
+```css
+/* 1. before, after */
+: css에서 지정하는 가상 요소, 꾸밈을 위한 요소
+.favorite::before {
+  content: "*";
+  color: indianed;
+}
+
+.favorite::after {
+  content: "*";
+  color: indianed;
+}
+
+/* 2. first-letter, first-line, selection */
+- 첫번 째 글자, 첫번째 라인
+- selection: 선택 영역을 의미합니다 예를 들어 밑의 코드에 해당한 부분을 드래그하면 해당 css가 적용됩니다.
+.lorem::selection {
+  bacground-color: red;
+  color: white:
+}
+```
+
+4. 선택자 결합
+
+```css
+/* 하위 선택자 */
+/* ul에 속한 li들중 마지막 요소 */
+ul li:last-of-type {
+  color: red;
+}
+
+/* 자식 선택자 */
+/* #list의 자식들 중에서만 고른 마지막 요소 */
+#list > li:last-of-type {
+}
+
+/* 형제 선택자 */
+/* 1. 일반 형제 선택자 결합 (~) */
+/* selector는 code의 뒤에있는 선택자만 가능하며 같은 부모를 가지고 있어야 한다. 
+쉽게 말해 code의 뒤쪽에 있는 Selector를 바꾸는데 용이하다. */
+code ~ selector {
+}
+
+/* 2. 인접 형제 선택자 결합 (+) */
+/* - 말 그대로 인접한 위아래 selector 만 선택이 가능합니다.  */
+code + selector {
+}
+
+/* 3. 그룹화 */
+p,
+span,
+div {
+  color: puple;
+}
+```
+
+5. 범용 선택자(Universal Selector)
+
+```css
+/* 모든 요소 */
+* {
+}
+
+/* p 태그 중 class로 red를 가진 오소 */
+p.red {
+}
+```
+
+6. 상속 제어하기 - initial. inherit, unset
+
+```css
+.parent {
+  color: blue;
+}
+
+/* 원래 parent의 css를 상속받지만 initial을 설정하면 기존의 설정이 유지된다.
+하지만 모든 요소가 상속되는 것은 아니다.
+all의 경우는 전부다 initial을 설정한다. */
+.child {
+  color: initial;
+  font-size: initial;
+
+  all: initial;
+}
+
+/* initial과는 다르게 상속 시키게해주는 요소 */
+.parent * {
+  color: inherit;
+}
+
+/* unset
+1. 부모로부터 상속받을 값이 있을 때 : inherit로 적용됩니다.
+2. 부모로부터 상속받을 값이 없을 때 : initial로 적용됩니다. */
+.parent2 .child1 {
+  all: unset;
+}
+```
+
+6. 우선순위
+   선언된 곳 > 명시도 > 코드 위치
+
+선언된 곳
+
+명시도 (적용범위가 적을수록 명시도가 높은 것!)
+id가 class보다 명시도가 높다.
+
+코드 위치
+
+!important를 입력하면 가장 높은 우선순위이다.
+
+# Font
+
+```css
+/* font의 단축속성을 쓸시 */
+font: style weight size/lien-height font-family 순서로 작성하여야 합니다.;
+```
