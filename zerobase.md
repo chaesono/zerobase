@@ -334,3 +334,21 @@ id가 class보다 명시도가 높다.
 /* font의 단축속성을 쓸시 */
 font: style weight size/lien-height font-family 순서로 작성하여야 합니다.;
 ```
+
+# SCSS
+
+```scss
+// input의 type이 text이고 input의 클래스가 error일때 바로 인접한 error-msg가 color가 red다.
+input[type="text"] {
+  &.error + .error-msg {
+    color: red;
+  }
+}
+```
+
+```css
+/* button의 hover가 disabled일때는 작동하지 않는다. */
+button:not(:disabled):hover {
+  background-color: red;
+}
+```
