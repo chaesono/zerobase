@@ -40,3 +40,11 @@ https://docs.emmet.io/cheat-sheet/
 Sass란?
 
 - Sass(Syntactically Awesome StyleSheets) is a stylesheet language that's complied to CSS
+
+```scss
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse; // table간의 간격을 지워주는 역할
+}
+```
