@@ -203,3 +203,246 @@ console.log(count);
 
 - some() : 배열 내 단 하나라도 콜백 함수의 조건을 만족하는 요소가 있다면 true, 아니면 flase 반환
 - every() : 배열 내 모든 요소가 콜백 함수의 조건을 만족한다면 true, 아니면 false 반환 (빈 배열일 경우 true)
+
+5. 두 수 최대 합
+6. 일곱 난장이
+7. Two Sum : for문 한개로 풀기
+8. 달팽이 만들기
+
+---
+
+# 프로토타입
+
+- 어떠한 객체가 만들어지기 위해 객체의 모태가 되는 원형
+- 자바스크립트는 일반적인 객체지향 언어와는 다르게, 프로토타입을 이용한 복사를 통해 새로운 객체 생성
+- 일반적인 객체 생성 방식: 속성은 생성자, 메서드는 프로토타입에서 정의
+
+```js
+// 생성자에서 속성 정의
+
+function Test(a, b) {
+  // 속성 정의
+}
+
+// 첫 메소드 정의
+Test.prototype.x = function() { ... };
+
+// 두번째 메소드 정의
+Test.prototype.y = function() { ... };
+
+// 객체 생성
+let test = new Test(1, 2);
+```
+
+- 예제
+
+```js
+// 생성자 속성 정의
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+// prototype을 이용한 Person 메서드 정의
+Person.prototype.isAudult = function () {
+  return this.age > 18;
+};
+
+// 객체 생성
+const p1 = new Person("bob", 26);
+const p2 = new Person("Alice", 16);
+
+console.log(p1);
+console.log(p2);
+
+console.log(p1.isAudult());
+```
+
+---
+
+# 연결리스트 (Linked List)
+
+- 각 노드가 데이터와 포인터를 가지며, 한 줄로 연결되어 있는 방식으로 데이터를 저장하는 자료 구조
+- 구현 메서드(method)
+
+  - 노드 개수 / 비어 있는지 확인 / 노드 출력: LinkedList.size(), LinkedList.isEmpty(), LinkedList.printNode()
+  - 노드 추가 : LinkedList.append(), LinkedList.insert()
+  - 노드 삭제 : LinkedList.remove(), LinkedList.removeAt()
+  - 데이터 위치 확인 : LinkedList.indexOf()
+
+- 사용 예시
+
+```js
+// Node(): data와 point를 가지고 있는 객체
+function Node(data) {
+  this.data = data;
+  this.next = null;
+}
+
+// LinkedList(): head와 length를 가지고 있는 객체
+function LinkedList() {
+  this.head = null;
+  this.length = 0;
+}
+
+// size() : 연결 리스트 내 노드 개수 확인
+LinkedList.prototype.size = function () {
+  return this.length;
+};
+
+// isEmpty() : 객체 내 노드 존재 여부 파악
+LinkedList.prototype.isEmpty = function () {
+  return this.length === 0;
+};
+
+// printNode() : 노드 출력
+LinkedList.prototype.printNode = function () {
+  for (let node = this.head; node != null; node = node.next) {
+    process.stdout.write(`${node.data} -> `);
+  }
+  console.log("null");
+};
+
+// append() : 연결 리스트 가장 끝에 노드 추가
+LinkedList.prototype.append = function (value) {
+  let node = new Node(value);
+  current = this.head;
+
+  if (this.head === null) {
+    this.head = node;
+  } else {
+    while (current.next != null) {
+      current = current.next;
+    }
+    current.next = node;
+  }
+
+  this.length++;
+};
+
+// insert() : position 위치에 노드 추가
+LinkedList.prototype.insert = function (value, position = 0) {
+  if (position < 0 || position > this.length) {
+    return false;
+  }
+
+  let node = new Node(value),
+    current = this.head,
+    index = 0,
+    prev;
+  if (position === 0) {
+    node.next = current;
+    this.head = node;
+  } else {
+    while (index++ < position) {
+      prev = current;
+      current = current.next;
+    }
+
+    node.next = current;
+    prev.next = node;
+  }
+
+  this.length++;
+};
+
+// remove() : value 데이터를 찾아 노드 삭제
+LinkedList.prototype.remove = function (value) {
+  let current = this.head,
+    prev = current;
+
+  while (current.data != value && current.next != null) {
+    prev = current;
+    current = current.next;
+  }
+
+  if (current.data != value) {
+    return null;
+  }
+
+  if (current === this.head) {
+    this.head = current.next;
+  } else {
+    prev.next = current.next;
+  }
+
+  this.length--;
+
+  return current.data;
+};
+
+// reoveAt(): position 위치 노드 삭제
+LinkedList.prototype.removeAt = function (position = 0) {
+  if (position < 0 || position >= this.length) {
+    return null;
+  }
+
+  let current = this.head,
+    index = 0,
+    prev;
+
+  if (position === 0) {
+    this.head = current.next;
+  } else {
+    while (index++ < position) {
+      prev = current;
+      current = current.next;
+    }
+
+    prev.next = current.next;
+  }
+
+  this.length--;
+
+  return current.data;
+};
+
+// indexOf() : value 값을 갖는 위치 반환
+LinkedList.prototype.indexOf = function (value) {
+  let current = this.head,
+    index = 0;
+
+  while (current != null) {
+    if (current.data === value) {
+      return index;
+    }
+
+    index++;
+    current = current.next;
+  }
+
+  return -1;
+};
+
+// remove2() : indexOf + removeAt
+LinkedList.prototype.remove2 = function (value) {
+  let index = this.indexOf(value);
+  return this.removeAt(index);
+};
+
+let ll = new LinkedList();
+console.log(ll);
+
+ll.insert(1);
+ll.insert(10);
+ll.insert(100);
+ll.insert(2, 1);
+ll.insert(3, 3);
+ll.printNode();
+
+console.log(ll.indexOf(1000));
+console.log(ll.indexOf(1));
+console.log(ll.indexOf(100));
+console.log(ll.indexOf(10));
+
+console.log(ll.remove2(1000));
+ll.printNode();
+console.log(ll.remove2(1));
+ll.printNode();
+console.log(ll.remove2(2));
+ll.printNode();
+console.log(ll.remove2(100));
+ll.printNode();
+
+console.log(ll.size());
+```
