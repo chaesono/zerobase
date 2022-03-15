@@ -916,3 +916,85 @@ console.log(stack.indexOf(1, 2));
 console.log(stack.includes(1));
 console.log(stack.includes(5));
 ```
+
+## 스택 문제 다시 풀어보기
+
+---
+
+# 큐
+
+- 먼저 넣은 데이터가 먼저 나오는 FIFO 기반의 선형 자료 구조
+  - 데이터 추가 / 삭제: Queue.enqueue(), Queue.dequeue()
+
+```js
+// Queue() : 생성자 함수로 초기 데이터 설정
+function Queue(array) {
+  this.array = array ? array : [];
+}
+
+// getBuffer()
+Queue.prototype.getBuffer = function () {
+  return this.array.slice();
+};
+
+// isEmpty()
+Queue.prototype.isEmpty = function () {
+  return this.array.length === 0;
+};
+
+// enqueue()
+Queue.prototype.enqueue = function (element) {
+  return this.array.push(element);
+};
+
+// dequeue()
+Queue.prototype.dequeue = function () {
+  return this.array.shift();
+};
+
+// front()
+Queue.prototype.front = function () {
+  return this.array.length === 0 ? undefined : this.array[0];
+};
+
+// size()
+Queue.prototype.size = function () {
+  return this.array.length;
+};
+
+// clear()
+Queue.prototype.clear = function () {
+  this.array = [];
+};
+
+let queue = new Queue([1, 2]);
+
+console.log(queue);
+
+queue.enqueue(3);
+queue.enqueue(4);
+console.log(queue);
+
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue);
+```
+
+shift 는 시간이 오래걸리기에 enqueue, dequeue는 다음과 같이 만든다.
+
+```js
+// enqueue()
+Queue.prototype.enqueue = function (element) {
+  return (this.array[this.tail++] = element);
+};
+
+// dequeue()
+Queue.prototype.dequeue = function () {
+  if (this.tail === this.head) return undefined;
+
+  let element = this.array[this.head];
+  delete this.array[this.head++];
+
+  return element;
+};
+```
