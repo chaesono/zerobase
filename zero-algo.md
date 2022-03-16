@@ -983,6 +983,23 @@ console.log(queue);
 shift 는 시간이 오래걸리기에 enqueue, dequeue는 다음과 같이 만든다.
 
 ```js
+// Queue() : 생성자 함수로 초기 데이터 설정
+function Queue(array) {
+  this.array = array ? array : [];
+  this.tail = array ? array.length : 0;
+  this.head = 0;
+}
+
+// getBuffer()
+Queue.prototype.getBuffer = function () {
+  return this.array.slice();
+};
+
+// isEmpty()
+Queue.prototype.isEmpty = function () {
+  return this.array.length === 0;
+};
+
 // enqueue()
 Queue.prototype.enqueue = function (element) {
   return (this.array[this.tail++] = element);
@@ -997,4 +1014,186 @@ Queue.prototype.dequeue = function () {
 
   return element;
 };
+
+// front()
+Queue.prototype.front = function () {
+  return this.array.length === 0 ? undefined : this.array[0];
+};
+
+// size()
+Queue.prototype.size = function () {
+  return this.array.length;
+};
+
+// clear()
+Queue.prototype.clear = function () {
+  this.array = [];
+};
+
+let queue = new Queue([1, 2]);
+
+console.log(queue);
+
+queue.enqueue(3);
+queue.enqueue(4);
+console.log(queue);
+
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue);
 ```
+
+## 우선순위 큐
+
+- 우선순위를 고려하여 먼저 넣은 데이터가 먼저 나오는 FIFO 기반의 선형 자료 구조
+- 우선순위 정렬 방식: 배열 기반, 연결리스트 기반, 힙(Heap) 기반 등의 정렬 방식 존재
+- 구현 메서드
+
+```js
+// Element() : 데이터와 우선순위를 저장하기 위한 생성자 함수
+function Element(data, priority) {
+  this.data = data;
+  this.priority = priority;
+}
+
+// PriorityQueue() : Element 관리를 위한 생성자 함수
+function PriorityQueue() {
+  this.array = [];
+}
+
+// getBuffer(): 객체 내 데이터 셋 반환
+PriorityQueue.prototype.getBuffer = function () {
+  return this.array.map((element) => element.data);
+};
+
+// isEmpty()
+PriorityQueue.prototype.isEmpty = function () {
+  return this.array.length === 0;
+};
+
+// enqueue()
+PriorityQueue.prototype.enqueue = function (data, priority) {
+  let element = new Element(data, priority);
+  let added = false;
+
+  for (let i = 0; i < this.array.length; i++) {
+    if (element.priority < this.array[i].priority) {
+      this.array.splice(i, 0, element);
+      added = true;
+      break;
+    }
+  }
+
+  if (!added) {
+    this.array.push(element);
+  }
+
+  return this.array.length;
+};
+
+// dequeue()
+PriorityQueue.prototype.dequeue = function () {
+  return this.array.shift();
+};
+
+let pq = new PriorityQueue();
+
+pq.enqueue("Alice", 1);
+pq.enqueue("Bob", 2);
+console.log(pq);
+pq.enqueue("Sono", 1);
+console.log(pq);
+```
+
+---
+
+# 원형 큐(Circular Queue)
+
+- 원형 형태를 가지며, 먼저 넣은 데이터가 먼저 나오는 FIFO 기반의 선형 자료 구조
+
+```js
+const DEFAULT_SIZE = 5;
+
+// CircularQueue() : 초기 속성값 설정을 위한 생성자 함수
+function CircularQueue(array = [], size = DEFAULT_SIZE) {
+  this.array = array;
+  this.size = array.length > size ? array.length : size;
+  this.length = array.length;
+  this.head = 0;
+  this.tail = array.length;
+}
+
+// getBuffer() : 객체 내 데이터 셋 반환
+CircularQueue.prototype.getBuffer = function () {
+  return this.array.slice();
+};
+
+// isEmpty()
+CircularQueue.prototype.isEmpty = function () {
+  return this.length === 0;
+};
+
+// isFull()
+CircularQueue.prototype.isFull = function () {
+  return this.length == this.size;
+};
+
+CircularQueue.prototype.enqueue = function (element) {
+  if (this.isFull()) return false;
+
+  this.array[this.tail % this.size] = element;
+  this.tail = (this.tail + 1) % this.size;
+  this.length++;
+
+  return true;
+};
+
+CircularQueue.prototype.dequeue = function () {
+  if (this.isEmpty()) return undefined;
+
+  let element = this.array[this.head % this.size];
+  delete this.array[this.head % this.size];
+  this.head = (this.head + 1) % this.size;
+  this.length--;
+
+  return element;
+};
+
+CircularQueue.prototype.front = function () {
+  return this.length === 0 ? undefined : this.array[this.head];
+};
+
+CircularQueue.prototype.dataSize = function () {
+  return this.length;
+};
+
+CircularQueue.prototype.clear = function (size = DEFAULT_SIZE) {
+  this.array = [];
+  this.size = size;
+  this.length = 0;
+  this.head = 0;
+  this.tail = 0;
+};
+
+let cq = new CircularQueue([1, 2, 3, 4]);
+
+cq.enqueue(5);
+cq.enqueue(6);
+console.log(cq);
+
+console.log(cq.dequeue());
+console.log(cq.dequeue());
+console.log(cq);
+
+cq.enqueue(6);
+console.log(cq);
+
+cq.enqueue(8);
+console.log(cq);
+```
+
+---
+
+# 데크 (Deque)
+
+- Double-Ended Queue 약자로, 삽입과 삭제가 양쪽 끝에서 모두 발생할 수 있는 선형 자료 구조
