@@ -352,3 +352,10 @@ button:not(:disabled):hover {
   background-color: red;
 }
 ```
+
+## 단위와 값
+
+- 절대길이 : px
+- 상대길이 : em, rem, vw, vh, vmin, vmax
+
+font-size는 em, rem등 상대길이로 설정하는 것이 좋다.
