@@ -89,3 +89,86 @@ console.log(person.firstName);
 # 자료 다루기
 
 ## 객체를 배열로 순회하기
+
+- Object.keys()
+- Object.values(object1)
+- Object.entries(object1) : [key, value] 쌍의 배열을 반환합니다.
+- Array.prototype.concat() : 인자로 주어진 배열이나 값들을 기존 배열에 합쳐서 새 배열을 반환합니다.
+
+## 배열 고차 함수
+
+- map
+- filter
+- reduce : 누적된 값
+
+```js
+function sumTotal(...numbers) {
+  return numbers.reduce(function (total, current) {
+    return total + current;
+  }, 0); // 초기값 total로 들어감
+}
+
+// 화살표 함수로 만들 시
+function sumTotal(...numbers) {
+  return numbers.reduce((total, current) => total + current, 0);
+}
+console.log(sumTotal(1, 2, 3, 4, 5));
+```
+
+- sort
+
+```js
+number.sort(function (a, b) {
+  return a - b;
+});
+
+// 문자를 비교할 시
+strings.sort(function (a, b) {
+  return a.localeCompare(b);
+});
+```
+
+# 호이스팅
+
+- 변수 선언을 끌어 올린다.
+- 호이스팅을 방지하기위해 var 대신 let, const 를 사용합니다.
+
+# IIFE (Immediately Invoked Function Expression)
+
+```js
+(function () {
+  var aName = "Barry";
+})();
+```
+
+- let, const의 경우에는 상관없지만 var의 경우에는 다른곳에서도 var의 값을 참조하려하기에 IIFE를 사용한다.
+- IIFE는 세미콜론을 앞이나 뒤에 꼭 붙여준다.
+
+# JSON
+
+- JSON -> "JS Object" (JSON Parse) => 서버에서 데이터를 가져올 때
+- JS Object -> "JSON" (JSON stringfy) => 서버로 데이터를 보낼 때
+
+# this 명시적 바인딩
+
+```js
+const zero = {
+  name: "베이스",
+  sayName: function () {
+    return this.name + "입니다";
+  },
+};
+
+function sayFullName(firstName) {
+  return firstName + this.sayName();
+}
+
+const result = sayFullName.call(zero, "장"); // this 명시적 바인딩
+console.log(result);
+
+const result2 = sayFullName.apply(zero, ["제로", "Zero"]); // 인수를 배열로 받을땐 call이아닌 apply
+console.log(result2);
+
+const sayFullNameZero = sayFullName.bind(zero); // bind가 가장 편리
+console.log(sayFullNameZero("제로"));
+```

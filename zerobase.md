@@ -357,5 +357,7 @@ button:not(:disabled):hover {
 
 - 절대길이 : px
 - 상대길이 : em, rem, vw, vh, vmin, vmax
+- em : 부모의 font-size
+- rem : 1rem = root의 font-size
 
 font-size는 em, rem등 상대길이로 설정하는 것이 좋다.

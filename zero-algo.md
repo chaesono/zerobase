@@ -1197,3 +1197,69 @@ console.log(cq);
 # 데크 (Deque)
 
 - Double-Ended Queue 약자로, 삽입과 삭제가 양쪽 끝에서 모두 발생할 수 있는 선형 자료 구조
+
+```js
+// Deque()
+function Deque(array = []) {
+  this.array = array;
+}
+
+// getBuffer()
+Deque.prototype.getBuffer = function () {
+  return this.array.slice();
+};
+
+// isEmpty()
+Deque.prototype.isEmpty = function () {
+  return this.array.length === 0;
+};
+
+// pushFront()
+Deque.prototype.pushFront = function (element) {
+  return this.array.unshift(element);
+};
+
+// popFront()
+Deque.prototype.popFront = function (element) {
+  return this.array.shift(element);
+};
+
+// push()
+Deque.prototype.pushBack = function (element) {
+  return this.array.push(element);
+};
+
+// pop()
+Deque.prototype.popBack = function (element) {
+  return this.array.pop(element);
+};
+
+// front()
+Deque.prototype.front = function () {
+  return this.array.length === 0 ? undefined : this.array[0];
+};
+
+// back()
+Deque.prototype.back = function () {
+  return this.array.length === 0
+    ? undefined
+    : this.array[this.array.length - 1];
+};
+
+// size()
+Deque.prototype.size = function () {
+  return this.array.length;
+};
+
+// clear()
+Deque.prototype.clear = function () {
+  this.array = [];
+};
+
+let dq = new Deque([1, 2, 3]);
+console.log(dq);
+
+dq.pushFront(0);
+dq.pushBack(4);
+console.log(dq);
+```
