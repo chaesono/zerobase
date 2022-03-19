@@ -361,3 +361,43 @@ button:not(:disabled):hover {
 - rem : 1rem = root의 font-size
 
 font-size는 em, rem등 상대길이로 설정하는 것이 좋다.
+
+- vw, vh : 뷰포트 백분율 길이
+- vmin, vmax : vw, vh중 작은 것이 vmin 큰것이 vmax : 보통 가로모드, 세로모드를 대응해야할 사이트를 만들 때 사용합니다.
+
+## 함수 표기법
+
+- calc()
+
+```
+width: calc(100% - 50px);
+```
+
+- min()
+
+```
+<!-- 둘중 작은 값 선택 -->
+width: min(100%, 500px);
+```
+
+- max()
+<!-- 둘중 큰 값 선택 -->
+
+```
+width: max(100%, 500px);
+```
+
+---
+
+## margin collapsing
+
+- 마진 상쇄, 마진 겹침, 마진 중복 등등 으로 불리운다
+- 여러 블록요소들의 위/아래 margin이 경우에 따라 가장 큰 크기를 가진 margin으로 결합되는 현상
+- 아래의 3가지 경우에 일어난다
+  - 인접 형제
+    - 두 형제 요소의 위/아래 여백이 만나 상쇄된다.
+  - 부모-자식요소 간
+    - 부모 블록에 border, padding, inline content가 업ㅅ어서 부모와 자식의 margin-top이 만나는 경우
+    - 부모 블록에 border, padding, inline content가 없고, 부모-자식을 분리할 height값이 지정되지 않아 부모와 자식이 margin-bottom이 만나는 경우
+  - 빈 블록
+    - border, padding, content가 없고, height 또한 존재하지 않으면, 해당 블록의 margin-top과 margin-bottom이 상쇄된다.
