@@ -401,3 +401,61 @@ width: max(100%, 500px);
     - 부모 블록에 border, padding, inline content가 없고, 부모-자식을 분리할 height값이 지정되지 않아 부모와 자식이 margin-bottom이 만나는 경우
   - 빈 블록
     - border, padding, content가 없고, height 또한 존재하지 않으면, 해당 블록의 margin-top과 margin-bottom이 상쇄된다.
+
+---
+
+# 레이아웃
+
+```css
+/* 
+레이아웃
+
+display - inline, block, inline-block
+*/
+
+/* 
+inline 요소 : ex) span..
+  - 영역의 크기가 내부 콘텐츠 크기로 정해진다.
+  - margin, padding을 좌우는 지정할수 있지만, top/bottom을 지정할 수 없다.
+  - 여러 요소가 가로 배치가 된다.
+
+block 요소 : ex) div..
+  - 영역의 크기를 width, height 지정할 수 있다.
+  - width를 지정하지 않으면 가로 전체를 차지한다.
+  - 여러 요소가 세로 배치가 된다.
+
+inline-block 요소 : ex) input..
+  - 영역의 크기를 width, height 지정할 수 있다.
+  - 여러 요소가 가로배치가 된다.
+  
+ */
+
+/* 
+ 요소를 없애는 방법
+ display: none,
+ visibility: hidden
+ */
+```
+
+## float
+
+- CSS 속성 float 은 한 요소가 보통 흐름(normal flow)으로부터 빠져 텍스트 및 인라인 요소가 그 주위를 감싸는 자기 컨테이너의 좌우측을 따라 배치되어야 함을 지정합니다.
+
+## position
+
+- position: static; : 기본 값
+- position: relative; : 자기 자신을 기준
+- position: absolute; : 현 위치의 부모를 기준
+  - 문서의 흐름에서 제거된다.
+  - 조상 중에서 position이 static이 아닌 요소를 찾아 기준점을 삼는다.
+- position: fixed
+  - 문서의 흐름에서 제거된다.
+  - 뷰포트의 초기 컨테이닝 블록을 기준으로 삼는다.
+- position: sticky;
+  - 스크롤할때 fixed처럼 작동
+  - 스크롤되는 조상의 바로 하위에 적용시켜야한다.
+  - 조상의 자식의 자식에 설정하면 동작하지 않는다.
+
+---
+
+# Flex, Grid 항상 공부하기

@@ -172,3 +172,111 @@ console.log(result2);
 const sayFullNameZero = sayFullName.bind(zero); // bind가 가장 편리
 console.log(sayFullNameZero("제로"));
 ```
+
+---
+
+# 클래스
+
+- 객체를 생성하기 위한 템플릿입니다.
+
+```js
+class Person {
+  constructor(name, age, location) {
+    this.name = name;
+    this.age = age;
+    this.location = location;
+  }
+
+  getName() {
+    return this.name + "입니다";
+  }
+}
+
+// 클래스 확장
+class Friends extends Person {
+  constructor(name, age, location) {
+    super(name, age, location);
+  }
+}
+
+const me = new Friends("chae", 10, "Korea");
+
+console.log(me.getName());
+```
+
+---
+
+# 클로저
+
+- 사용 할 일 있을 때 다시 찾아보기
+
+---
+
+# 비동기와 동기
+
+- 비동기 예제
+
+```js
+console.log("1");
+setTimeout(() => {
+  console.log("2");
+}, 1000);
+console.log("3");
+// 1 > 3 > 2 순서로 실행된다.
+```
+
+## 콜백
+
+```js
+console.log("1");
+
+function setTimeoutWithCallback(callbackFunc) {
+  setTimeout(() => {
+    console.log("2");
+    callbakcFunc();
+  }, 1000);
+}
+setTimeoutWithCallback(() => console.log("3"));
+// 1 > 2 > 3 출력
+```
+
+---
+
+## Promise
+
+```js
+const starbucks = function (coffeeName) {
+  return new Promise((resolve, reject) => {
+    if (coffeeName === "아메리카노") {
+      resolve("아메리카노 한잔입니다");
+    } else {
+      reject("아메리카노는 없습니다.");
+    }
+  });
+};
+
+starbucks("아메리")
+  .then((res) => console.log(res))
+  .catch((rej) => console.log(rej))
+  .finally(() => console.log("갑사합니다"));
+```
+
+---
+
+## async, await
+
+```js
+async function americano(someDrink) {
+  try {
+    const result = await starbucks();
+
+    return result;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    console.log("감사합니다");
+  }
+}
+
+console.log(americano("아메리카노"));
+```
