@@ -459,3 +459,214 @@ inline-block 요소 : ex) input..
 ---
 
 # Flex, Grid 항상 공부하기
+
+## Grid
+
+- Flex의 기본개념이 1차원이라면 Grid는 2차원이다.
+- 2차원이기에 행과 열이 존재함
+- gutters, gap : 행과 열사이의 공백
+
+```css
+/* grid */
+
+.container {
+  border: 5px dashed orange;
+  width: 400px;
+  height: 400px;
+
+  /* 안의 컨텐츠 내용은 grid 컨테이너 자체는 inline을 사용하고 싶을 때 inline-grid를 사용 */
+  display: grid;
+
+  /* 행, 단위는 px, fr = 비율,  */
+  grid-template-columns: repeat(5, 1fr);
+
+  /* 열  */
+  /* grid-template-rows: 1fr 1fr 1fr 1fr; */
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "hd hd hd hd hd"
+    "ma ma ma sb sb"
+    "ft ft ft ft ft";
+  row-gap: 1em;
+}
+
+.item {
+  background-color: paleturquoise;
+  border: 3px solid blue;
+  font-size: 24px;
+}
+
+.header {
+  grid-area: hd;
+}
+
+.main {
+  grid-area: ma;
+}
+
+.sidebar {
+  grid-area: sb;
+}
+
+.footer {
+  grid-area: ft;
+}
+```
+
+<!-- gird-templete-rows는 명시적으로 설정하고 grid-auto-rows는 암시적으로 설정한다. 넘치는 item이없으면 auto는 적용되지 않는다. -->
+
+### grid-auto-flow
+
+```js
+/* grid */
+
+.container {
+  border: 5px dashed orange;
+
+  /* 안의 컨텐츠 내용은 grid 컨테이너 자체는 inline을 사용하고 싶을 때 inline-grid를 사용 */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  /* 넘친 item이 다음 열에서 적용된다면 그 전 열의 빈칸을 채운다. row dense */
+  grid-auto-flow: row dense;
+
+}
+
+.item {
+  background-color: paleturquoise;
+  border: 3px solid blue;
+  font-size: 24px;
+}
+
+.item:nth-child(2){
+  grid-column: span 3;
+}
+```
+
+### container가 아닌 item에 적용하는 메서드
+
+- grid-row
+
+```css
+.container {
+  border: 5px dashed orange;
+
+  /* 안의 컨텐츠 내용은 grid 컨테이너 자체는 inline을 사용하고 싶을 때 inline-grid를 사용 */
+  display: grid;
+  grid-template-rows: repeat(5, 100px);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.item {
+  background-color: paleturquoise;
+  border: 3px solid blue;
+  font-size: 24px;
+}
+
+.item:first-child {
+  background-color: coral;
+  /* 명시적으로 생성할 때만 줄의 번호가 생긴다. */
+  grid-row: 4 / span 2;
+  grid-column: 2 / -1;
+}
+```
+
+- grid-area
+  - grid-templete-area 에서 item에 area 단축키를 설정할때 사용
+  - grid-row-start, grid-column-start, grid-row-end, grid-column-end 를 한번에 설정하는 shorted property
+  - 이 2가지의 기능을 갖고있다.
+
+```css
+grid-area: grid-row-start / grid-comlumn-start / grid-row-end / grid-column-end;
+```
+
+- grid-order
+
+```css
+.item:nth-child(5) {
+  /* order의 기본 값은 0이며, -1로 설정하면 가장 앞으로 이동한다. */
+  order: -1;
+}
+```
+
+- grid의 단위
+  - fr, min-content, max-content
+  - autofill, autofit
+    - autofill : 화면이 늘어나면 알아서 칼럼, 로우개수를 늘려줌
+    - autofit : 남는 곳이 생기면 아이템자체를 늘려서 화면을 채워줌
+  - minmax(150px, 1fr)
+
+---
+
+# 반응형 디자인 vs 적응형 디자인
+
+- 반응형 디자인 : 크기를 늘이고 줄이고에 따라 화면이 바뀌는 것
+- 적응형 디자인 : ex) naver.com , m.naver.com
+
+## 반응형 디자인
+
+- Media Query - @media
+
+```css
+@meida media-type and (media-feature-rule) {
+}
+```
+
+- media-type 의 유형
+  - all
+  - print
+  - screen
+  - speech
+  - 우리는 all, screen 밖에 쓸 일 없다.
+
+```css
+body {
+  background-color: blanchedalmond;
+}
+
+@media screen and (max-width: 300px) {
+  body {
+    background-color: tomato;
+  }
+}
+```
+
+```css
+/* 가로모드 */
+@media screen and (orientation: landscape) {
+  body {
+    background-color: tomato;
+  }
+}
+```
+
+- breakpoint
+
+```css
+body {
+  background-color: blanchedalmond;
+}
+/* 모바일 퍼스트 */
+.title {
+  font-size: 48px;
+}
+
+@media screen and (min-width: 480px) {
+  body {
+    background-color: tomato;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    background-color: tomato;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  body {
+    background-color: tomato;
+  }
+}
+```
