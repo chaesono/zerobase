@@ -1263,3 +1263,94 @@ dq.pushFront(0);
 dq.pushBack(4);
 console.log(dq);
 ```
+
+---
+
+# 딕셔너리
+
+```js
+function Dictionary(items = {}) {
+  this.items = items;
+}
+
+Dictionary.prototype.getBuffer = function () {
+  return { ...this.items };
+};
+
+Dictionary.prototype.clear = function () {
+  this.items = {};
+};
+
+Dictionary.prototype.size = function () {
+  return Object.keys(this.items).length;
+};
+
+Dictionary.prototype.has = function (key) {
+  return this.items.hasOwnProperty(key);
+};
+
+Dictionary.prototype.set = function (key, value) {
+  this.items[key] = value;
+};
+
+Dictionary.prototype.get = function (key) {
+  return this.has(key) ? this.items[key] : undefined;
+};
+
+Dictionary.prototype.remove = function (key) {
+  if (this.has(key)) {
+    delete this.item[key];
+    return true;
+  }
+
+  return false;
+};
+
+Dictionary.prototype.keys = function () {
+  return Object.keys(this.items);
+};
+
+Dictionary.prototype.values = function () {
+  return Object.values(this.items);
+};
+
+Dictionary.prototype.each = function (fn) {
+  for (let k in this.items) {
+    fn(k, this.items[k]);
+  }
+};
+
+function printDictionary(key, value) {
+  console.log(`key: ${key}`);
+  console.log(`vlaue: ${value}`);
+}
+
+let dict = new Dictionary();
+
+dict.set("age", 19);
+dict.set("name", "alice");
+
+dict.each(printDictionary);
+```
+
+---
+
+# 해시테이블
+
+- 해시함수
+
+  - 임의의 길이의 데이터를 고정된 길이의 데이터로 매핑하는 함수
+  - 해시 함수 특성
+    - 압축성 : 다양한 가변 길이의 입력에 대해 고정된 크기의 결과값을 반환하는 성질
+    - 효율성 : 어떤 입력 값에 대해서도 많은 자원과 시간이 소요되지 않고 처리되는 성질
+    - 저항성 : 결과값을 바탕으로 입력 값을 찾는 것이 불가능한 성질
+
+- 해시테이블
+  - Hash 함수를 사용하여 평균 O(1) 시간 복잡도로 특정 값을 신속하게 찾는 자료구조
+  - 충돌 해결 방법
+    - 해시 함수 변경 : 더 큰 숫자의 공간과 Modular 산술 값을 이용해 충돌 최소화
+    - 자료구조 확장 : Open Addressing Method (선형 조사법, 이중해시), Close Addressing Method(체이닝)
+  - 구현 메서드
+    - 객체 초기화 / 크기 반환 : HashTable,clear(), HashTable,size()
+    - 전체 데이터 반환, 전체 데이터 출력 : HashTable.getBuffer(), HashTable.print()
+    - 데이터 추가 / 삭제 / 반환 : HashTable.put(), HashTable.remvoe(), HashTable.get()
