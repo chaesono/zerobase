@@ -1354,3 +1354,231 @@ dict.each(printDictionary);
     - 객체 초기화 / 크기 반환 : HashTable,clear(), HashTable,size()
     - 전체 데이터 반환, 전체 데이터 출력 : HashTable.getBuffer(), HashTable.print()
     - 데이터 추가 / 삭제 / 반환 : HashTable.put(), HashTable.remvoe(), HashTable.get()
+
+## 해시테이블 충돌 및 해결
+
+```js
+const HASH_SIZE = 1013;
+
+// Element() : key, value 저장을 위한 생성자
+
+function Element(key, value) {
+  this.key = key;
+  this.value = value;
+}
+
+function HashTable() {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+}
+
+HashTable.prototype.hashCode = function (key) {
+  // 이렇게 설정 함으로 써 충돌을 막아준다
+  let hash = 5381;
+  for (let i = 0; i < key.length; i++) {
+    hash = hash * 33 + key.charCodeAt(i);
+  }
+  return hash % HASH_SIZE;
+};
+
+HashTable.prototype.put = function (key, value) {
+  let index = this.hashCode(key);
+  console.log(`key: ${key} -> index: ${index}`);
+
+  if (this.table[index] !== undefined) {
+    return false;
+  }
+
+  this.table[index] = new Element(key, value);
+  this.length++;
+
+  return true;
+};
+
+HashTable.prototype.get = function (key) {
+  return this.table[this.hashCode(key)];
+};
+
+HashTable.prototype.remove = function (key) {
+  let element = this.table[this.hashCode(key)];
+
+  if (element !== undefined) {
+    delete this.table[this.hashCode(key)];
+    this.length--;
+  }
+
+  return element;
+};
+
+HashTable.prototype.clear = function () {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+};
+
+HashTable.prototype.size = function () {
+  return this.length;
+};
+
+HashTable.prototype.getBuffer = function () {
+  let array = [];
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      array.push(this.table[i]);
+    }
+  }
+
+  return array;
+};
+
+HashTable.prototype.print = function () {
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      console.log(`${i} -> ${this.table[i].key} : ${this.table[i].value}`);
+    }
+  }
+};
+
+let ht = new HashTable();
+
+ht.put("Ana", 172);
+ht.put("Donnie", 183);
+ht.put("Sue", 163);
+ht.put("Jamie", 168);
+ht.put("Paul", 190);
+
+ht.print();
+console.log(ht.getBuffer());
+
+console.log(ht.size());
+ht.clear();
+console.log(ht);
+```
+
+## 선형 조사법 해시테이블
+
+- Hash 충돌이 발생했을 때, 그 다음 주소를 확인하고 비어 있다면 그 자리에 대신 저장하는 자료구조
+
+```js
+const HASH_SIZE = 5;
+
+// Element() : key, value 저장을 위한 생성자
+
+function Element(key, value) {
+  this.key = key;
+  this.value = value;
+}
+
+function LinearHashTable() {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+}
+
+LinearHashTable.prototype.hashCode = function (key) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash += key.charCodeAt(i);
+  }
+  return hash % HASH_SIZE;
+};
+
+LinearHashTable.prototype.put = function (key, value) {
+  let index = this.hashCode(key);
+  let startIndex = index;
+  console.log(`key: ${key} -> index: ${index}`);
+
+  do {
+    if (this.table[index] === undefined) {
+      this.table[index] = new Element(key, value);
+      this.length++;
+
+      return true;
+    }
+
+    index = (index + 1) % HASH_SIZE;
+  } while (index !== startIndex);
+
+  return false;
+};
+
+LinearHashTable.prototype.get = function (key) {
+  let index = this.hashCode(key);
+  let startIndex = index;
+
+  do {
+    if (this.table[index] !== undefined && this.table[index].key === key) {
+      return this.table[index].value;
+    }
+
+    index = (index + 1) % HASH_SIZE;
+  } while (index !== startIndex);
+
+  return undefined;
+};
+
+LinearHashTable.prototype.remove = function (key) {
+  let index = this.hashCode(key);
+  let startIndex = index;
+
+  do {
+    if (this.table[index] !== undefined && this.table[index].key === key) {
+      let element = this.table[index];
+      delete this.table[index];
+      this.length--;
+
+      return element;
+    }
+
+    index = (index + 1) % HASH_SIZE;
+  } while (index !== startIndex);
+
+  return undefined;
+};
+
+LinearHashTable.prototype.clear = function () {
+  this.table = new Array(HASH_SIZE);
+  this.length = 0;
+};
+
+LinearHashTable.prototype.size = function () {
+  return this.length;
+};
+
+LinearHashTable.prototype.getBuffer = function () {
+  let array = [];
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      array.push(this.table[i]);
+    }
+  }
+
+  return array;
+};
+
+LinearHashTable.prototype.print = function () {
+  for (let i = 0; i < this.table.length; i++) {
+    if (this.table[i]) {
+      console.log(`${i} -> ${this.table[i].key} : ${this.table[i].value}`);
+    }
+  }
+};
+
+let lt = new LinearHashTable();
+
+lt.put("Ana", 172);
+lt.put("John", 179);
+lt.put("Donnie", 182);
+lt.put("Mindy", 142);
+console.log(lt.put("Paul", 168));
+console.log(lt.put("Sue", 163));
+
+console.log(lt.remove("Donnie"));
+console.log(lt);
+```
+
+## 체이닝 해시테이블
+
+- 별도의 자료구조인 연결 리스트를 병합 사용하여 Hash 충돌을 해결한 해시테이블 기반 자료구조
+
+```js
+
+```
