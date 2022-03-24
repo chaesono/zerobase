@@ -280,3 +280,41 @@ async function americano(someDrink) {
 
 console.log(americano("아메리카노"));
 ```
+
+---
+
+# 이벤트
+
+## 이벤트 버블링
+
+- 상위 요소로 전파된다.
+
+```js
+button.addEventListener("click", (event) => {
+  event.stopPropagation(); // 설정하면 버블링이 일어나지 않는다
+
+  window.alert("button");
+});
+```
+
+## 이벤트 캡처링
+
+- 상위에서 하위요소로 전파된다.
+
+```js
+button.addEventListener(
+  "click",
+  (event) => {
+    event.stopPropagation(); // 설정하면 버블링이 일어나지 않는다
+
+    window.alert("button");
+  },
+  true
+); // 기본 값으로 captrue: false 가 되있다. false일 경우에는 버블링 ture로 바꿔줄 경우에는 캡처링이 발생한다.
+```
+
+## 이벤트 위임
+
+```js
+const items = document.querySelector("ul"); // ul에 이벤트를 달아두면 ul에 속해있는 li에도 이벤트가 다 발생한다.
+```
