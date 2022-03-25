@@ -318,3 +318,59 @@ button.addEventListener(
 ```js
 const items = document.querySelector("ul"); // ul에 이벤트를 달아두면 ul에 속해있는 li에도 이벤트가 다 발생한다.
 ```
+
+## debounce
+
+- 마지막 호출 이후 일정 밀리세컨드 이후로 지연된 호출을 하도록 만드는 함수
+- 이벤트 발생이 많을 때 가장 마지막 이벤트만을 실행시킨다.
+
+```js
+function debounc(callback, wait) {
+  let timeout;
+
+  // 함수가 호출시 매번 반환
+  return function (...args) {
+    const context = this;
+
+    // 타이머를 취소시켜준다.
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback.apply(context, args), wait);
+  };
+}
+```
+
+## throttle
+
+- 이벤트 발생이 많을 때 특정 밀리세컨드 이벤트를 차단하고 단 한번만 실행시킨다
+- 무한 스크롤할 경우에 사용하기 적절함
+- 매개변수 : 실행시킬 함수, 차단시킬 밀리세컨드
+- 보통 lodash에서 많이 사용함
+- debounce throttle 구글링해서 잘 이해하기.
+
+```js
+function throttle(callback, wait) {
+  let timeout = null;
+
+  return function (...args) {
+    const context = this;
+
+    if (!timeout) {
+      timeout = setTImeout(() => {
+        callback, apply(this, args);
+        timeout = null;
+      }, wait);
+    }
+  };
+}
+```
+
+## 이벤트 루프
+
+- 비동기 방식으로 동시성을 지원하는 방법
+- Javascript 엔진은 한 번에 한 개의 코드만 실행할 수 있다.
+- 하지만 사용되는 환경은 동시에 많은 작업이 처리된다.
+
+- 프로세스 : 프로그램을 메모리에 할당
+- 스레드 : 프로세스 내의 실행 단위
+- 스택 : Last In First Out
+- 큐 : First In First out
