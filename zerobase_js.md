@@ -374,3 +374,22 @@ function throttle(callback, wait) {
 - 스레드 : 프로세스 내의 실행 단위
 - 스택 : Last In First Out
 - 큐 : First In First out
+
+---
+
+# 모듈
+
+- 독립적인 특성을 가진 기능 단위의 부품
+- 프로그램의 기능을 독립적인 부품으로 분리한 것
+- 동시에 여러 다른 모듈과 함께 조합하여 재사용될 수 있다
+
+- CommonJS
+- amd
+- umd
+- es-module
+
+```js
+import * as i from "./asdf";
+
+console.log(i.a);
+```

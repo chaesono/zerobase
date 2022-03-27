@@ -1582,3 +1582,105 @@ console.log(lt);
 ```js
 
 ```
+
+---
+
+# 트리
+
+- 두 노드 사이의 하나의 간선만 연결되어 있는, 최소 연결과 계층형태의 비선형 자료 구조
+
+---
+
+# 정렬
+
+- 배열 내 원소들을 번호순이나 사전 순서와 같이 일정한 순서대로 열거하는 알고리즘
+- 대표 정렬 알고리즘 별 구현 함수
+
+## 거품정렬(BubbleSort)
+
+- 서로 인접한 두 원소를 비교하면서 정렬하는 알고리즘
+- O(n^2)
+
+```js
+let swap = function (arr, idx_1, idx_2) {
+  let tmp = arr[idx_1];
+  arr[idx_1] = arr[idx_2];
+  arr[idx_2] = tmp;
+};
+
+let bubbleSort_1 = function (arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        swap(arr, j, j + 1);
+      }
+    }
+  }
+};
+
+let bubbleSort_2 = function (arr) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        swap(arr, j, j + 1);
+      }
+    }
+  }
+};
+
+let bubbleSort_3 = function (arr) {
+  let swapped;
+  for (let i = 0; i < arr.length - 1; i++) {
+    swapped = false;
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        swap(arr, j, j + 1);
+        swapped = true;
+      }
+    }
+    if (!swapped) break;
+  }
+};
+```
+
+```js
+let swap = function (arr, idx_1, idx_2) {
+  let tmp = arr[idx_1];
+  arr[idx_1] = arr[idx_2];
+  arr[idx_2] = tmp;
+};
+
+let ascending = function (x, y) {
+  return x > y;
+};
+
+let descending = function (x, y) {
+  return x < y;
+};
+
+let bubbleSort = function (arr, compare) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (compare(arr[j], arr[j + 1])) {
+        swap(arr, j, j + 1);
+      }
+    }
+  }
+};
+
+/* test code */
+let init_array = [6, 5, 1, 3, 2, 4];
+let array;
+
+let sorting = [bubbleSort];
+let order = [ascending, descending];
+for (let i = 0; i < sorting.length; i++) {
+  for (let j = 0; j < order.length; j++) {
+    console.log(sorting[i].name, order[j].name);
+
+    array = [...init_array];
+    sorting[i](array, order[j]);
+    console.log(array);
+  }
+}
+```
