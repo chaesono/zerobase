@@ -1684,3 +1684,90 @@ for (let i = 0; i < sorting.length; i++) {
   }
 }
 ```
+
+## 선택 정렬
+
+- 최소값을 찾아 데이터 영역의 가장 앞으로 이동하는 방식을 반복하여 전체 데이터 영역을 정렬하는 알고리즘
+- O(n^2)
+
+```js
+let selectionSort = function (arr, compare) {
+  for (let i = 0; i < arr.length; i++) {
+    let k = i;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (compare(arr[k], arr[j])) k = j;
+    }
+    swap(arr, i, k);
+  }
+};
+```
+
+## 삽입 정렬
+
+- 이미 정렬된 데이터 영역과 비교하면서, 자신의 위치를 찾아 요소를 삽입하며 정렬하는 알고리즘
+- O(n^2)
+
+```js
+let insertionSort = function (arr, compare) {
+  for (let i = 1; i < arr.length; i++) {
+    let tmp = arr[i];
+    let j;
+    for (j = i - 1; j >= 0; j--) {
+      arr[j + 1] = arr[j];
+      if (compare(tmp, arr[j])) {
+        break;
+      }
+    }
+    arr[j + 1] = tmp;
+  }
+};
+```
+
+## 병합 정렬
+
+- 하나의 배열을 두 개의 균등한 크기로 분할하고, 부분 정렬하며, 이를 다시 합하면서 전체를 정렬해가는 알고리즘
+- O(n log n)
+
+```js
+let mergeSort = function (arr, compare) {
+  if (arr.length === 1) return arr;
+
+  let m = (arr.length / 2).toFixed(0);
+  let left = mergeSort(arr.slice(0, m), compare);
+  let right = mergeSort(arr.slice(m), compare);
+
+  let i = 0,
+    j = 0,
+    k = 0;
+  while (i < left.length && j < right.length) {
+    arr[k++] = compare(left[i], right[j]) ? right[j++] : left[i++];
+  }
+  while (i < left.length) arr[k++] = left[i++];
+  while (j < right.length) arr[k++] = right[j++];
+
+  return arr;
+};
+```
+
+## 퀵 정렬
+
+- 특정한 값을 기준으로 큰 숫자와 작은 숫자를 분할하여 정렬하는 알고리즘
+- O(n log n)
+
+```js
+let quickSort = function (arr, compare, s = 0, e = arr.length - 1) {
+  let start = s;
+  let pivot = arr[e];
+
+  for (let i = s; i <= e; i++) {
+    if (compare(pivot, arr[i])) {
+      swap(arr, start, i);
+      start++;
+    }
+  }
+  swap(arr, start, e);
+
+  if (start - 1 > s) quickSort(arr, compare, s, start - 1);
+  if (start + 1 < e) quickSort(arr, compare, start + 1, e);
+};
+```
