@@ -1771,3 +1771,8 @@ let quickSort = function (arr, compare, s = 0, e = arr.length - 1) {
   if (start + 1 < e) quickSort(arr, compare, start + 1, e);
 };
 ```
+
+## 이진 검색
+
+- 자료 구조 기반으로 정렬되어 있는 데이터 안에서 특정 값을 찾는 기법
+- O(log n)
