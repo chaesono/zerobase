@@ -389,6 +389,7 @@ function throttle(callback, wait) {
 - es-module
 
 ```js
+// ES module
 import * as i from "./asdf";
 
 console.log(i.a);
