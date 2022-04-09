@@ -1589,6 +1589,427 @@ console.log(lt);
 
 - 두 노드 사이의 하나의 간선만 연결되어 있는, 최소 연결과 계층형태의 비선형 자료 구조
 
+## 전위 순회 (Pre-order)
+
+- N - L - R
+
+```js
+// 의사 코드 (pseudo-code)
+preorder(node)
+  print node.value
+  if node.left !== null then preorder(node.left)
+  if node.right !== null then preorder(node.right)
+```
+
+## 중위 순회 (In-order)
+
+- L - N - R
+
+```js
+// 의사 코드 (pseudo-code)
+inorder(node)
+  print node.value
+  if node.left !== null then inorder(node.left)
+  print node.value
+  if node.right !== null then inorder(node.right)
+```
+
+## 층별 순회 (Level-order) BFS에서 쓰임
+
+1. root 노드 방문
+2. Level 증가
+3. 왼쪽에서 오른쪽 순으로 방문
+
+```js
+// 의사 코드 (pseudo-code)
+levelorder(root)
+  q.enqueue(root)
+  whiel not q.empty do
+    node := q.dequeue()
+    print node.value
+    if node.left !== null q.enqueue(node.left)
+    if node.right !== null q.enqueue(node.right)
+```
+
+## 후위 순회 (Post-order)
+
+- L - R - N
+
+```js
+// 의사 코드 (pseudo-code)
+postorder(node)
+  if node.left !== null then postorder(node.left)
+  if node.right !== null then postorder(node.right)
+  print node.value
+```
+
+## 이진 트리 (Binary Tree)
+
+- 각각의 노드가 최대 두개의 자식 노드를 가지는 트리 자료 구조
+- 활용방식
+
+  - 검색과 정렬: 이진 탐색 트리와 이진 힙 구현에 활용
+  - 허프만 코딩: 연관 분기 구조 위한 데이터 표현에 활용
+
+- 이진트리의 종류
+
+1. 포화 이진 트리(Perfect binary tree
+
+- 모든 레벨의 노드가 가득 채워져 있는 트리
+- leaf 노드를 제외한 모든 자식은 2개의 노드를 보유
+- 노드의 개수 : 2^h - 1
+
+2. 완전 이진 트리 (Complete binary tree)
+
+- 마지막 레벨 전까지 노드가 가득 채워져 있고, 마지막 레벨은 왼쪽부터 순차적으로 채워져 있는 트리
+- 배열을 사용해 효율적인 표현이 가능
+- 노드의 개수 : n < 2^h - 1
+
+3. 정 이진 트리 (Full binary tree)
+
+- 모든 노드가 0개 또는 2개의 자식 노드만 갖는 트리
+- proper 또는 plane 이진 트리라고도 불림
+- 노드의 개수 : n < 2^h - 1
+
+4. 편향 이진 트리 (Skewed binary tree)
+
+- 왼쪽 혹은 오른쪽으로 편향되게 치우쳐 있는 트리
+- 각각의 높이에 하나의 노드만 존재
+- 노드의 개수 h
+
+5. 균형 이진 트리 (Balanced binary tree)
+
+- 삽입/삭제가 이루어 질 때, 왼쪽 서브 트리와 오른쪽 서브 트리의 높이 차를 1 이하로 맞추는 이진 탐색 트리
+
+## 이진 트리 순회 (Binary Tree Traversal)
+
+- 각각의 노드가 최대 두개의 자식 노드를 가지는 트리 자료 구조를 순회하는 방법
+
+```js
+/* Queue 객체 추가 */
+function Queue(array) {
+  this.array = array ? array : [];
+}
+
+Queue.prototype.isEmpty = function () {
+  return this.array.length === 0;
+};
+
+Queue.prototype.enqueue = function (element) {
+  return this.array.push(element);
+};
+
+Queue.prototype.dequeue = function () {
+  return this.array.shift();
+};
+
+// Node(): value와 left, right node 저장을 위한 생성자
+function Node(value) {
+  this.value = value;
+  this.left = null;
+  this.right = null;
+}
+
+// BinaryTree(): 시작 노드인 root를 저장하기 위한 생성자
+function BinaryTree() {
+  this.root = null;
+}
+
+// _insertNode(): 재귀로 트리를 순회하며 노드 추가 (내부 사용)
+BinaryTree.prototype._insertNode = function (node, value) {
+  if (node === null) {
+    node = new Node(value);
+  } else if (value < node.value) {
+    node.left = this._insertNode(node.left, value);
+  } else if (value > node.value) {
+    node.right = this._insertNode(node.right, value);
+  }
+
+  return node;
+};
+
+// insert(): 노드 추가
+BinaryTree.prototype.insert = function (value) {
+  this.root = this._insertNode(this.root, value);
+};
+
+// _preOrderTraverseNode(): 재귀로 트리를 순회하며 전위 순회 (내부 사용)
+BinaryTree.prototype._preOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+
+  callback(node);
+  this._preOrderTraverseNode(node.left, callback);
+  this._preOrderTraverseNode(node.right, callback);
+};
+
+// preOrderTraverse(): 전위 순회하며 노드 출력
+BinaryTree.prototype.preOrderTraverse = function (callback) {
+  this._preOrderTraverseNode(this.root, callback);
+};
+
+// _inOrderTraverseNode(): 재귀로 트리를 순회하며 중위 순회 (내부 사용)
+BinaryTree.prototype._inOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+
+  this._inOrderTraverseNode(node.left, callback);
+  callback(node);
+  this._inOrderTraverseNode(node.right, callback);
+};
+
+// inOrderTraverse(): 중위 순회하며 노드 출력
+BinaryTree.prototype.inOrderTraverse = function (callback) {
+  this._inOrderTraverseNode(this.root, callback);
+};
+
+// _postOrderTraverseNode(): 재귀로 트리를 순회하며 후위 순회 (내부 사용)
+BinaryTree.prototype._postOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+
+  this._postOrderTraverseNode(node.left, callback);
+  this._postOrderTraverseNode(node.right, callback);
+  callback(node);
+};
+
+// postOrderTraverse(): 후위 순회하며 노드 출력
+BinaryTree.prototype.postOrderTraverse = function (callback) {
+  this._postOrderTraverseNode(this.root, callback);
+};
+
+// levelOrderTraverse(): 층별 순회하며 노드 출력
+BinaryTree.prototype.levelOrderTraverse = function (callback) {
+  let q = new Queue();
+  let node;
+
+  q.enqueue(this.root);
+  while (!q.isEmpty()) {
+    node = q.dequeue();
+    callback(node);
+    if (node.left !== null) q.enqueue(node.left);
+    if (node.right !== null) q.enqueue(node.right);
+  }
+};
+
+let tree = new BinaryTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+console.log("********** Pre-Order **********");
+tree.preOrderTraverse(printNode);
+console.log("end");
+
+console.log("********** In-Order **********");
+tree.inOrderTraverse(printNode);
+console.log("end");
+
+console.log("********** Post-Order **********");
+tree.postOrderTraverse(printNode);
+console.log("end");
+
+console.log("********** Level-Order **********");
+tree.levelOrderTraverse(printNode);
+console.log("end");
+```
+
+## 이진 탐색 트리
+
+- 현재 노드를 기준으로 왼쪽에는 작은 값, 오른쪽은 큰 값으로 정렬해 놓는 이진 트리 기반 자료 구조
+
+```js
+// Node(): value와 left, right node 저장을 위한 생성자
+function Node(value) {
+  this.value = value;
+  this.left = null;
+  this.right = null;
+}
+
+// BinarySearchTree(): 시작 노드인 root를 저장하기 위한 생성자
+function BinarySearchTree() {
+  this.root = null;
+}
+
+// _inOrderTraverseNode(): 재귀로 트리를 순회하며 중위 순회 (내부 사용)
+BinarySearchTree.prototype._inOrderTraverseNode = function (node, callback) {
+  if (node === null) {
+    return;
+  }
+
+  this._inOrderTraverseNode(node.left, callback);
+  callback(node);
+  this._inOrderTraverseNode(node.right, callback);
+};
+
+// inOrderTraverse(): 중위 순회하며 노드 출력
+BinarySearchTree.prototype.inOrderTraverse = function (callback) {
+  this._inOrderTraverseNode(this.root, callback);
+  console.log("end");
+};
+
+// _insertNode(): 재귀로 트리를 순회하며 노드 추가 (내부 사용)
+BinarySearchTree.prototype._insertNode = function (node, value) {
+  if (node === null) {
+    node = new Node(value);
+  } else if (value < node.value) {
+    node.left = this._insertNode(node.left, value);
+  } else if (value > node.value) {
+    node.right = this._insertNode(node.right, value);
+  }
+
+  return node;
+};
+
+// insert(): 노드 추가
+BinarySearchTree.prototype.insert = function (value) {
+  this.root = this._insertNode(this.root, value);
+};
+
+// _minNode(): 반복문으로 트리를 순회하며 최솟값 노드 탐색
+BinarySearchTree.prototype._minNode = function (node) {
+  if (node === null) {
+    return null;
+  }
+
+  while (node && node.left !== null) {
+    node = node.left;
+  }
+
+  return node.value;
+};
+
+// _maxNode(): 반복문으로 트리를 순회하며 최대값 노드 탐색
+BinarySearchTree.prototype._maxNode = function (node) {
+  if (node === null) {
+    return null;
+  }
+
+  while (node && node.right !== null) {
+    node = node.right;
+  }
+
+  return node.value;
+};
+
+// min(): 최솟값 노드 탐색
+BinarySearchTree.prototype.min = function () {
+  return this._minNode(this.root);
+};
+
+// max(): 최댓값 노드 탐색
+BinarySearchTree.prototype.max = function () {
+  return this._maxNode(this.root);
+};
+
+// _searchNode(): 재귀로 트리를 순회하며 값을 만족하는 노드 탐색
+BinarySearchTree.prototype._searchNode = function (node, value) {
+  if (node === null) {
+    return false;
+  }
+
+  if (node.value === value) {
+    return true;
+  } else if (node.value > value) {
+    return this._searchNode(node.left, value);
+  } else if (node.value < value) {
+    return this._searchNode(node.right, value);
+  }
+};
+
+// search(): value 노드 탐색
+BinarySearchTree.prototype.search = function (value) {
+  return this._searchNode(this.root, value);
+};
+
+// _findMimNode(): 반복문으로 트리를 순회하며 최솟값을 보유한 노드 탐색/반환
+BinarySearchTree.prototype._findMinNode = function (node) {
+  while (node && node.left !== null) {
+    node = node.left;
+  }
+
+  return node;
+};
+
+// _removeNode(): 재귀로 트리를 순회하며 값을 만족하는 노드를 찾고 삭제
+BinarySearchTree.prototype._removeNode = function (node, value) {
+  if (node === null) {
+    return null;
+  }
+
+  if (node.value === value) {
+    // case 1: 0 child node (leaf node)
+    if (node.left === null && node.right === null) {
+      node = null;
+    }
+    // case 2: 1 child node
+    else if (node.left === null) {
+      node = node.right;
+    } else if (node.right === null) {
+      node = node.left;
+    }
+
+    // case 3: 2 child node
+    else {
+      let aux = this._findMinNode(node.right);
+      node.value = aux.value;
+      node.right = this._removeNode(node.right, aux.value);
+    }
+  } else if (node.value > value) {
+    node.left = this._removeNode(node.left, value);
+  } else if (node.value < value) {
+    node.right = this._removeNode(node.right, value);
+  }
+
+  return node;
+};
+
+// remove(): 노트 삭제
+BinarySearchTree.prototype.remove = function (value) {
+  this.root = this._removeNode(this.root, value);
+};
+
+let tree = new BinarySearchTree();
+
+tree.insert("F");
+tree.insert("B");
+tree.insert("A");
+tree.insert("D");
+tree.insert("C");
+tree.insert("E");
+tree.insert("G");
+tree.insert("I");
+tree.insert("H");
+
+function printNode(node) {
+  process.stdout.write(`${node.value} -> `);
+}
+
+tree.inOrderTraverse(printNode);
+tree.remove("H");
+tree.inOrderTraverse(printNode);
+tree.remove("D");
+tree.inOrderTraverse(printNode);
+tree.remove("F");
+tree.inOrderTraverse(printNode);
+
+console.log(tree.root);
+```
+
 ---
 
 # 정렬
