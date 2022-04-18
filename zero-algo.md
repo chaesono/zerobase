@@ -2505,6 +2505,261 @@ graph.shortestPath("A");
 
 ---
 
+# 힙
+
+- 최댓값 혹은 최솟값을 빠르게 찾기 위해 완전이진트리 형태로 연산을 수행하는 자료구조
+- 정렬 : 각 노드의 값은 자식 노드가 가진 값보다 작거나 혹은 큰 순서대로 정렬
+- 인덱스 값
+  - 현재 노드 : N, 부모 노드 : (N - 1) / 2, 왼쪽 자식 노드 : (N _ 2) + 1, 오른쪽 자식 노드 : (N _ 2) + 2
+
+```js
+// Min Heap
+/* 최소힙 (MinHeap) */
+// Heap(): 배열 내 요소를 저장하기 위한 생성자
+function Heap() {
+  this.items = [];
+}
+
+// swap(): 배열 내 두 요소 위치를 변경
+Heap.prototype.swap = function (index1, index2) {
+  let tmp = this.items[index1];
+  this.items[index1] = this.items[index2];
+  this.items[index2] = tmp;
+};
+
+// parentIndex(): 부모 노드의 위치 반환
+Heap.prototype.parentIndex = function (index) {
+  return Math.floor((index - 1) / 2);
+};
+
+// leftChildIndex(): 왼쪽 자식 노드의 위치 반환
+Heap.prototype.leftChildIndex = function (index) {
+  return index * 2 + 1;
+};
+
+// rightChildIndex(): 오른쪽 자식 노드의 위치 반환
+Heap.prototype.rightChildIndex = function (index) {
+  return index * 2 + 2;
+};
+
+// parent(): 부모 노드의 요소 값 반환
+Heap.prototype.parent = function (index) {
+  return this.items[this.parentIndex(index)];
+};
+
+// leftChild(): 왼쪽 자식 노드의 요소 값 반환
+Heap.prototype.leftChild = function (index) {
+  return this.items[this.leftChildIndex(index)];
+};
+
+// rightChild(): 오른쪽 자식 노드의 요소 값 반환
+Heap.prototype.rightChild = function (index) {
+  return this.items[this.rightChildIndex(index)];
+};
+
+// peek(): 현재 정렬된 최소/최대 요소값 반환
+Heap.prototype.peek = function () {
+  return this.items[0];
+};
+
+// size(): 현재 배열 내 크기 반환
+Heap.prototype.size = function () {
+  return this.items.length;
+};
+
+// insert(): 신규 노드 추가
+Heap.prototype.insert = function (item) {
+  this.items[this.size()] = item;
+  this.bubbleUp();
+};
+
+// bubbleUp(): 추가된 노드 위치 정렬
+Heap.prototype.bubbleUp = function () {
+  let index = this.size() - 1;
+  while (this.parent(index) && this.parent(index) > this.items[index]) {
+    this.swap(this.parentIndex(index), index);
+    index = this.parentIndex(index);
+  }
+};
+
+// extract(): root 노드 반환 및 삭제
+Heap.prototype.extract = function () {
+  let item = this.items[0];
+  this.items[0] = this.items[this.size() - 1];
+  this.items.pop();
+  this.bubbleDown();
+  return item;
+};
+
+// bubbleDown(): 대체된 root 노드 위치를 기준으로 정렬
+Heap.prototype.bubbleDown = function () {
+  let index = 0;
+  while (
+    this.leftChild(index) &&
+    (this.leftChild(index) < this.items[index] ||
+      this.rightChild(index) < this.items[index])
+  ) {
+    let childIndex = this.leftChildIndex(index);
+    if (
+      this.rightChild(index) &&
+      this.rightChild(index) < this.items[childIndex]
+    ) {
+      childIndex = this.rightChildIndex(index);
+    }
+
+    this.swap(childIndex, index);
+    index = childIndex;
+  }
+};
+
+let minHeap = new Heap();
+
+minHeap.insert(90);
+minHeap.insert(15);
+minHeap.insert(10);
+minHeap.insert(7);
+minHeap.insert(12);
+minHeap.insert(2);
+minHeap.insert(8);
+minHeap.insert(3);
+// console.log(minHeap);
+
+console.log(minHeap.extract());
+// console.log(minHeap);
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+console.log(minHeap.extract());
+```
+
+```js
+// Max Heap
+/* 최대힙 (MaxHeap) */
+// Heap(): 배열 내 요소를 저장하기 위한 생성자
+function Heap() {
+  this.items = [];
+}
+
+// swap(): 배열 내 두 요소 위치를 변경
+Heap.prototype.swap = function (index1, index2) {
+  let tmp = this.items[index1];
+  this.items[index1] = this.items[index2];
+  this.items[index2] = tmp;
+};
+
+// parentIndex(): 부모 노드의 위치 반환
+Heap.prototype.parentIndex = function (index) {
+  return Math.floor((index - 1) / 2);
+};
+
+// leftChildIndex(): 왼쪽 자식 노드의 위치 반환
+Heap.prototype.leftChildIndex = function (index) {
+  return index * 2 + 1;
+};
+
+// rightChildIndex(): 오른쪽 자식 노드의 위치 반환
+Heap.prototype.rightChildIndex = function (index) {
+  return index * 2 + 2;
+};
+
+// parent(): 부모 노드의 요소 값 반환
+Heap.prototype.parent = function (index) {
+  return this.items[this.parentIndex(index)];
+};
+
+// leftChild(): 왼쪽 자식 노드의 요소 값 반환
+Heap.prototype.leftChild = function (index) {
+  return this.items[this.leftChildIndex(index)];
+};
+
+// rightChild(): 오른쪽 자식 노드의 요소 값 반환
+Heap.prototype.rightChild = function (index) {
+  return this.items[this.rightChildIndex(index)];
+};
+
+// peek(): 현재 정렬된 최소/최대 요소값 반환
+Heap.prototype.peek = function () {
+  return this.items[0];
+};
+
+// size(): 현재 배열 내 크기 반환
+Heap.prototype.size = function () {
+  return this.items.length;
+};
+
+// insert(): 신규 노드 추가
+Heap.prototype.insert = function (item) {
+  this.items[this.size()] = item;
+  this.bubbleUp();
+};
+
+// bubbleUp(): 추가된 노드 위치 정렬
+Heap.prototype.bubbleUp = function () {
+  let index = this.size() - 1;
+  while (this.parent(index) && this.parent(index) < this.items[index]) {
+    this.swap(this.parentIndex(index), index);
+    index = this.parentIndex(index);
+  }
+};
+
+// extract(): root 노드 반환 및 삭제
+Heap.prototype.extract = function () {
+  let item = this.items[0];
+  this.items[0] = this.items[this.size() - 1];
+  this.items.pop();
+  this.bubbleDown();
+  return item;
+};
+
+// bubbleDown(): 대체된 root 노드 위치를 기준으로 정렬
+Heap.prototype.bubbleDown = function () {
+  let index = 0;
+  while (
+    this.leftChild(index) &&
+    (this.leftChild(index) > this.items[index] ||
+      this.rightChild(index) > this.items[index])
+  ) {
+    let childIndex = this.leftChildIndex(index);
+    if (
+      this.rightChild(index) &&
+      this.rightChild(index) > this.items[childIndex]
+    ) {
+      childIndex = this.rightChildIndex(index);
+    }
+
+    this.swap(childIndex, index);
+    index = childIndex;
+  }
+};
+
+let maxHeap = new Heap();
+
+maxHeap.insert(90);
+maxHeap.insert(15);
+maxHeap.insert(10);
+maxHeap.insert(7);
+maxHeap.insert(12);
+maxHeap.insert(2);
+maxHeap.insert(8);
+maxHeap.insert(3);
+console.log(maxHeap);
+
+console.log(maxHeap.extract());
+// console.log(maxHeap);
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+console.log(maxHeap.extract());
+```
+
+---
+
 # 정렬
 
 - 배열 내 원소들을 번호순이나 사전 순서와 같이 일정한 순서대로 열거하는 알고리즘
