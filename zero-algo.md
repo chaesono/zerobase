@@ -2760,6 +2760,107 @@ console.log(maxHeap.extract());
 
 ---
 
+# 트라이
+
+- 탐색 트리의 일종으로, 문자열이나 연관 배열을 저장하는 데 사용되는 트리 자료 구조
+- 문자열 검색에 특화된 자료구조
+
+```js
+// TrieNode(): 문자 노드와 끝 단어 표시를 위한 노드 생성자
+function TrieNode() {
+  this.children = {}; // key: 문자, value: TrieNode
+  this.endOfWord = false; // 단어 여부
+}
+
+// Trie(): 루트 노드 저장을 위한 생성자
+function Trie() {
+  this.root = new TrieNode();
+}
+
+// insert(): 문자열 추가
+Trie.prototype.insert = function (word) {
+  let current = this.root;
+
+  for (let i = 0; i < word.length; i++) {
+    let ch = word[i];
+    let node = current.children[ch];
+
+    if (node === undefined) {
+      node = new TrieNode();
+      current.children[ch] = node;
+    }
+
+    current = node;
+  }
+
+  current.endOfWord = true;
+};
+
+// search(): 문자열 검색
+Trie.prototype.search = function (word) {
+  let current = this.root;
+
+  for (let i = 0; i < word.length; i++) {
+    let ch = word[i];
+    let node = current.children[ch];
+
+    if (node === undefined) {
+      return false;
+    }
+
+    current = node;
+  }
+
+  return current.endOfWord;
+};
+
+// delete(): 문자열 삭제
+Trie.prototype.delete = function (word, current = this.root, index = 0) {
+  if (index === word.length) {
+    if (!current.endOfWord) return false;
+
+    current.endOfWord = false;
+
+    return Object.keys(current.children).length === 0;
+  }
+
+  let ch = word[index];
+  let node = current.children[ch];
+
+  if (node === undefined) return false;
+
+  let isDeleteNode = this.delete(word, node, index + 1) && !node.endOfWord;
+  if (isDeleteNode) {
+    delete current.children[ch];
+    return Object.keys(current.children).length === 0;
+  }
+
+  return false;
+};
+
+let trie = new Trie();
+
+trie.insert("be");
+trie.insert("bee");
+trie.insert("can");
+trie.insert("cat");
+trie.insert("cd");
+
+console.log(trie.search("bee"));
+trie.delete("bear");
+console.log(trie.search("bee"));
+trie.delete("b");
+console.log(trie.search("bee"));
+trie.delete("bee");
+console.log(trie.search("bee"));
+
+console.log(trie.root.children);
+console.log(trie.root.children["b"]);
+console.log(trie.root.children["b"].children["e"]);
+```
+
+---
+
 # 정렬
 
 - 배열 내 원소들을 번호순이나 사전 순서와 같이 일정한 순서대로 열거하는 알고리즘
@@ -2945,3 +3046,114 @@ let quickSort = function (arr, compare, s = 0, e = arr.length - 1) {
 
 - 자료 구조 기반으로 정렬되어 있는 데이터 안에서 특정 값을 찾는 기법
 - O(log n)
+- 반복문과 재귀를 사용
+
+```js
+// binarySearch_loop(): 반복문 기반의 이진 검색
+function binarySearch_loop(arr, n) {
+  let lowIndex = 0;
+  let midIndex = 0;
+  let highIndex = arr.length - 1;
+
+  while (lowIndex <= highIndex) {
+    midIndex = Math.floor((lowIndex + highIndex) / 2);
+    if (arr[midIndex] > n) {
+      highIndex = midIndex - 1;
+    } else if (arr[midIndex] < n) {
+      lowIndex = midIndex + 1;
+    } else {
+      return midIndex;
+    }
+  }
+
+  return -1;
+}
+
+// binarySearch_recursive(): 재귀 함수 기반의 이진 검색
+function binarySearch_recursive(
+  arr,
+  n,
+  lowIndex = 0,
+  highIndex = arr.length - 1
+) {
+  if (highIndex < lowIndex) return -1;
+
+  let midIndex = Math.floor((lowIndex + highIndex) / 2);
+
+  if (arr[midIndex] > n) {
+    return binarySearch_recursive(arr, n, lowIndex, midIndex - 1);
+  } else if (arr[midIndex] < n) {
+    return binarySearch_recursive(arr, n, midIndex + 1, highIndex);
+  } else {
+    return midIndex;
+  }
+}
+
+/* test code */
+let array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+console.log(binarySearch_loop(array, 0));
+console.log(binarySearch_loop(array, 3));
+console.log(binarySearch_loop(array, 7));
+console.log(binarySearch_loop(array, 10));
+
+console.log(binarySearch_recursive(array, 0));
+console.log(binarySearch_recursive(array, 3));
+console.log(binarySearch_recursive(array, 7));
+console.log(binarySearch_recursive(array, 10));
+```
+
+# 탐욕 알고리즘
+
+- 매 순간 최적 해를 선택하면서 최종적으로 최적해에 도달하는 알고리즘 설계 기법
+- 최적 부분 구조나 탐욕 선택 속성 문제를 해결하는데 적합
+- 매 순간 최적 해를 찾으면서 구하는 방법이 항상 최적임을 보장하지 않아 유의 필요
+- 동전, 빠른 길찾기
+
+# 백트래킹
+
+- 경우의 수로 해를 찾는 도중 해가 나올 수 없는 조건일 때 이를 중단하고 다른 경우의 수로 해를 찾는 알고리즘 기법
+- 해가 되지 않는 경우의 수는 배재하여 해를 찾는 시간 복잡도를 단축
+
+# 동적 계획법
+
+- Memoization로 중복 연산을 방지하며, 작은 부분 문제로 큰 문제를 해결하며 해를 도출하는 알고리즘 설계 기법
+- 부분 문제는 중복되며, 상위 문제 해결 시 재사용
+
+- Top-down : 재귀를 통해 큰 문제를 작은 문제로 나눠 해결하며 해를 찾는 방법
+
+```js
+function fibo_td(n, d = []) {
+  if (n < 2) return n;
+  if (d[n]) return d[n]; // 이미 있는 것이면 재귀를 돌지않는다.
+
+  d[n] = fibo_td(n - 1) + fibo_td(n - 2);
+
+  return d[n];
+}
+```
+
+- Bottom-up : 반복문을 통해 작은 문제부터 차례대로 해를 찾는 방법
+
+```js
+function fibo_bu(n, d = []) {
+  d[0] = 0;
+  d[1] = 1;
+
+  for (let i = 2; i <= n; i++) {
+    d[i] = d[i - 1] + d[i - 2];
+  }
+
+  return d[n];
+}
+```
+
+# 최단경로
+
+- Dijkstra 알고리즘 : 단일 최단 경로, 최소 비용 산출
+
+- A\* 알고리즘 : 휴리스틱 방법 사용한 탐색
+
+- Bellman-Ford 알고리즘 : 음수 가중치 허용한 비용 산출
+
+- Floyd-Warshall 알고리즘 : 동적 계획법 기반 고차원 기법
