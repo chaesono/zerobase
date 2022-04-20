@@ -3151,9 +3151,251 @@ function fibo_bu(n, d = []) {
 # 최단경로
 
 - Dijkstra 알고리즘 : 단일 최단 경로, 최소 비용 산출
+  - 그래프에서 출발점과 도착점 사이의 최단거리를 구하는 알고리즘
+
+```js
+// ShortestPath(): edge object 객체 저장을 위한 생성자
+function ShortestPath() {
+  this.edges = {};
+}
+
+// addVertex(): 정점 추가 (간선 비용 표시를 위해 object 형태로 저장)
+ShortestPath.prototype.addVertex = function (vertex) {
+  this.edges[vertex] = {};
+};
+
+// addEdge(): 간선 추가
+ShortestPath.prototype.addEdge = function (srcVertex, dstVertex, weight) {
+  this.edges[srcVertex][dstVertex] = weight;
+};
+
+// _extractMin(): 최단 거리 노드 탐색
+ShortestPath.prototype._extractMin = function (queue, dist) {
+  let minDistance = Number.POSITIVE_INFINITY;
+  let minVertex = null;
+
+  for (let vertex in queue) {
+    if (dist[vertex] <= minDistance) {
+      minDistance = dist[vertex];
+      minVertex = vertex;
+    }
+  }
+
+  return minVertex;
+};
+
+// dijkstra(): 다익스트라 최단 경로 탐색
+ShortestPath.prototype.dijkstra = function (start) {
+  let queue = {};
+  let dist = {};
+
+  for (let vertex in this.edges) {
+    dist[vertex] = Number.POSITIVE_INFINITY;
+    queue[vertex] = this.edges[vertex];
+  }
+
+  dist[start] = 0;
+  while (Object.keys(queue).length != 0) {
+    let u = this._extractMin(queue, dist);
+
+    delete queue[u];
+
+    for (let neighbor in this.edges[u]) {
+      let alt = dist[u] + this.edges[u][neighbor];
+      if (alt < dist[neighbor]) dist[neighbor] = alt;
+    }
+  }
+
+  for (let vertex in this.edges)
+    if (dist[vertex] === Number.POSITIVE_INFINITY) delete dist[vertex];
+
+  return dist;
+};
+
+let path = new ShortestPath();
+path.addVertex("A");
+path.addVertex("B");
+path.addVertex("C");
+path.addVertex("D");
+path.addVertex("E");
+
+path.addEdge("A", "B", 10);
+path.addEdge("A", "C", 3);
+path.addEdge("B", "C", 1);
+path.addEdge("B", "D", 2);
+path.addEdge("C", "B", 4);
+path.addEdge("C", "D", 8);
+path.addEdge("C", "E", 2);
+path.addEdge("D", "E", 7);
+path.addEdge("E", "D", 9);
+
+console.log(path);
+console.log(path.dijkstra("A"));
+console.log(path.dijkstra("B"));
+console.log(path.dijkstra("C"));
+```
 
 - A\* 알고리즘 : 휴리스틱 방법 사용한 탐색
 
 - Bellman-Ford 알고리즘 : 음수 가중치 허용한 비용 산출
 
 - Floyd-Warshall 알고리즘 : 동적 계획법 기반 고차원 기법
+  - 동적 계획법을 활용해, 그래프에서 가능한 모든 정점 쌍에 대한 최단 거리를 구하는 알고리즘
+  - 음의 가중치가 있어도 사용 가능하며, 많은 수의 간선으로 이루어져 있는 밀집 그래프에 사용 적합
+
+```js
+// ShortestPath(): edge object 객체 저장을 위한 생성자
+function ShortestPath() {
+  this.edges = {};
+}
+
+// addVertex(): 정점 추가 (간선 비용 표시를 위해 object 형태로 저장)
+ShortestPath.prototype.addVertex = function (vertex) {
+  this.edges[vertex] = {};
+};
+
+// addEdge(): 간선 추가
+ShortestPath.prototype.addEdge = function (srcVertex, dstVertex, weight) {
+  this.edges[srcVertex][dstVertex] = weight;
+};
+
+// _extractMin(): 최단 거리 노드 탐색
+ShortestPath.prototype._extractMin = function (queue, dist) {
+  let minDistance = Number.POSITIVE_INFINITY;
+  let minVertex = null;
+
+  for (let vertex in queue) {
+    if (dist[vertex] <= minDistance) {
+      minDistance = dist[vertex];
+      minVertex = vertex;
+    }
+  }
+
+  return minVertex;
+};
+
+// dijkstra(): 다익스트라 최단 경로 탐색
+ShortestPath.prototype.dijkstra = function (start) {
+  let queue = {};
+  let dist = {};
+
+  for (let vertex in this.edges) {
+    dist[vertex] = Number.POSITIVE_INFINITY;
+    queue[vertex] = this.edges[vertex];
+  }
+
+  dist[start] = 0;
+  while (Object.keys(queue).length != 0) {
+    let u = this._extractMin(queue, dist);
+
+    delete queue[u];
+
+    for (let neighbor in this.edges[u]) {
+      let alt = dist[u] + this.edges[u][neighbor];
+      if (alt < dist[neighbor]) dist[neighbor] = alt;
+    }
+  }
+
+  for (let vertex in this.edges)
+    if (dist[vertex] === Number.POSITIVE_INFINITY) delete dist[vertex];
+
+  return dist;
+};
+
+// floydWarshall(): 플로이드-워셜 최단 경로 탐색
+ShortestPath.prototype.floydWarshall = function () {
+  let dist = {};
+
+  for (let srcVertex in this.edges) {
+    dist[srcVertex] = {};
+    for (let dstVertex in this.edges) {
+      if (srcVertex === dstVertex) dist[srcVertex][dstVertex] = 0;
+      else dist[srcVertex][dstVertex] = Number.POSITIVE_INFINITY;
+    }
+  }
+
+  for (let srcVertex in this.edges) {
+    for (let dstVertex in this.edges[srcVertex]) {
+      dist[srcVertex][dstVertex] = this.edges[srcVertex][dstVertex];
+    }
+  }
+
+  for (let minVertex in this.edges) {
+    for (let srcVertex in this.edges) {
+      for (let dstVertex in this.edges) {
+        dist[srcVertex][dstVertex] = Math.min(
+          dist[srcVertex][dstVertex],
+          dist[srcVertex][minVertex] + dist[minVertex][dstVertex]
+        );
+      }
+    }
+  }
+
+  for (let srcVertex in this.edges) {
+    for (let dstVertex in this.edges) {
+      if (dist[srcVertex][dstVertex] === Number.POSITIVE_INFINITY)
+        delete dist[srcVertex][dstVertex];
+    }
+  }
+
+  return dist;
+};
+
+let path = new ShortestPath();
+path.addVertex("A");
+path.addVertex("B");
+path.addVertex("C");
+path.addVertex("D");
+path.addVertex("E");
+
+path.addEdge("A", "B", 10);
+path.addEdge("A", "C", 3);
+path.addEdge("B", "C", 1);
+path.addEdge("B", "D", 2);
+path.addEdge("C", "B", 4);
+path.addEdge("C", "D", 8);
+path.addEdge("C", "E", 2);
+path.addEdge("D", "E", 7);
+path.addEdge("E", "D", 9);
+
+console.log(path);
+console.log(path.dijkstra("A"));
+console.log(path.dijkstra("B"));
+console.log(path.dijkstra("C"));
+console.log(path.dijkstra("D"));
+console.log(path.dijkstra("E"));
+console.log(path.floydWarshall());
+```
+
+# 분할 정복
+
+- 문제를 나눌 수 없을 때까지 작게 나누고, 부분 문제를 해결하며 병합해 해를 도출하는 알고리즘 설계 기법
+
+```js
+function star(n, mat, x, y) {
+  if (n === 1) {
+    mat[y][x] = "*";
+    return;
+  }
+
+  let size = Math.floor(n / 3);
+  for (let j = 0; j < 3; j++) {
+    for (let i = 0; i < 3; i++) {
+      if (i == 1 && j == 1) continue;
+
+      star(size, mat, x + i * size, y + j * size);
+    }
+  }
+}
+
+function solution(n) {
+  let mat = new Array(n).fill(0).map(() => new Array(n).fill(" "));
+  star(n, mat, 0, 0);
+
+  for (let i = 0; i < n; i++) {
+    console.log(mat[i].join(""));
+  }
+}
+
+solution(27);
+```
