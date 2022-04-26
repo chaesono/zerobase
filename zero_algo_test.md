@@ -23,3 +23,5 @@ function solution(A) {
   return A.sort(compare);
 }
 ```
+
+- 제곱근이 정수면 약수의 개수는 홀수
