@@ -530,6 +530,7 @@ inline-block 요소 : ex) input..
 
   /* 넘친 item이 다음 열에서 적용된다면 그 전 열의 빈칸을 채운다. row dense */
   grid-auto-flow: row dense;
+  grid-auto-flow: column dense;
 
 }
 
