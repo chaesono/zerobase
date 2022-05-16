@@ -258,7 +258,7 @@ ul li:last-of-type {
 /* 1. 일반 형제 선택자 결합 (~) */
 /* selector는 code의 뒤에있는 선택자만 가능하며 같은 부모를 가지고 있어야 한다. 
 쉽게 말해 code의 뒤쪽에 있는 Selector를 바꾸는데 용이하다. */
-code ~ s elector {
+code ~ selector {
 }
 
 /* 2. 인접 형제 선택자 결합 (+) */
