@@ -69,3 +69,58 @@ export default function App() {
 
 - Hot Module Replacement(또는 HMR)는 webpack에서 제공하는 가장 유용한 기능 중 하나입니다. 모든 종류의 모듈을 새로고침 할 필요 없이 런타임에 업데이트 할 수 있습니다.
 - [참고링크](https://webpack.kr/guides/hot-module-replacement)
+
+# JSX(리액트 기본 문법)
+
+`const element = <h1>Hello, world!</h1>;`
+
+위에 희한한 태그 문법은 문자열도, HTML도 아닙니다.
+
+JSX라 하며 JavaScript를 확장한 문법입니다. UI가 어떻게 생겨야 하는지 설명하기 위해 React와 함께 사용할 것을 권장합니다. JSX라고 하면 템플릿 언어가 떠오를 수도 있지만, JavaScript의 모든 기능이 포함되어 있습니다.
+
+> 경고
+> JSX는 HTML보다는 JavaScript에 가깝기 때문에, React DOM은 HTML 어트리뷰트 이름 대신 camelCase 프로퍼티 명명 규칙을 사용합니다.
+> 예를 들어, JSX에서 class는 className가 되고 tabindex는 tabIndex가 됩니다.
+
+[참고링크](https://ko.reactjs.org/docs/introducing-jsx.html)
+
+## 조건부 렌더링
+
+- Return문 안에서는 조건문 사용이 불가능합니다.
+- 그래서 사용하는 것이 삼항 연산자입니다.
+
+[참고링크](https://ko.reactjs.org/docs/conditional-rendering.html)
+
+## Components Props
+
+https://ko.reactjs.org/docs/components-and-props.html
+
+- props에서 아무 값도 넘기지 않으면 default로 true가 전달됩니다.
+
+> props 간단활용예시
+
+```jsx
+function App() {
+  const info = {
+    firstName: "Chae",
+    lastName: "Wonjin",
+    withImg: true,
+  };
+
+  return (
+    <div className="App">
+      <Header title={"Learn React A"} />
+      <Welcome {...info} />
+    </div>
+  );
+}
+```
+
+## props.children 활용
+
+- 사용자 정의 컴포넌트가 일반적인 html 태그의 구조와 비슷할 때
+- 컴포넌트에 다른 컴포넌트를 전달해야 할 때
+
+### JSX 참고 링크
+
+https://ko.reactjs.org/docs/jsx-in-depth.html
