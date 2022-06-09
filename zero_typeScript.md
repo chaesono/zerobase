@@ -167,3 +167,8 @@ const un: undefined = undefined;
  * 그러나 void와 undefined는 TypeScript에서 같은 것이 아님
  */
 ```
+
+## TypeScript 클래스
+
+- C#에서 유래된 것이 많다
+- 일부 기능은 TS에서만 존재하는 고유 문법으로 컴파일 후에 사라진다.
