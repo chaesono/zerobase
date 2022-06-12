@@ -285,12 +285,12 @@ export default function App() {
   // 배열을 의존성 배열이라고 합니다.
   useEffect(() => {}, [state, props.a]);
 
-  // componentWillUnmount
   useEffect(() => {
     return () => {
       cleanup;
     };
   }, [state, props.a]);
+  // componentWillUnmount
 
   return <div>App</div>;
 }
