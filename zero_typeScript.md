@@ -256,7 +256,7 @@ const p = new Person("Jang", 99);
 console.log(p.age);
 ```
 
-## exxtends
+## extends
 
 ```ts
 /**
