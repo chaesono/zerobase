@@ -654,7 +654,7 @@ interface PersonInterface {
 }
 ```
 
-### Union 타입
+## Union 타입
 
 ```Ts
 type StringOrNumber = string | number
