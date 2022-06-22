@@ -297,3 +297,32 @@ export default function App() {
 ```
 
 - [관련링크](https://ko.reactjs.org/docs/hooks-overview.html)
+
+---
+
+## key
+
+- key는 왜 필요할까?
+- Key는 React가 어떤 항목을 변경, 추가 또는 삭제할지 식별하는 것을 돕습니다. key는 엘리먼트에 안정적인 고유성을 부여하기 위해 배열 내부의 엘리먼트에 지정해야 합니다.
+
+```js
+const todoItems = todos.map((todo, index) => (
+  // Only do this if items have no stable IDs
+  <li key={index}>{todo.text}</li>
+));
+```
+
+- 항목의 순서가 바뀔 수 있는 경우 key에 인덱스를 사용하는 것은 권장하지 않습니다. 이로 인해 성능이 저하되거나 컴포넌트의 state와 관련된 문제가 발생할 수 있습니다. 리스트 항목에 명시적으로 key를 지정하지 않으면 React는 기본적으로 인덱스를 key로 사용합니다.
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) => (
+    // 맞습니다! 배열 안에 key를 지정해야 합니다.
+    <ListItem key={number.toString()} value={number} />
+  ));
+  return <ul>{listItems}</ul>;
+}
+```
+
+- key 값은 map 함수 내에서 지정해야 합니다.
