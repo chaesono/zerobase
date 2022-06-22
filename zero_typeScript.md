@@ -679,3 +679,9 @@ const obj: Person | Me = {
     genderType: 'M'
 }
 ```
+
+## VS 에서의 TS 빌드
+
+`tsc src/파일이름.ts` 를 해주면 파일이름.js 가 나옵니다.
+
+`tsc src/파일이름.ts --declaration` 를 해주면 파일이름.d.ts 가 나옵니다.
