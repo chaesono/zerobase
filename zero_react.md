@@ -325,4 +325,4 @@ function NumberList(props) {
 }
 ```
 
-- key 값은 map 함수 내에서 지정해야 합니다.
+- key 값은 map 함수 내에서 지정해야 합니다
