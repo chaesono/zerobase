@@ -326,3 +326,137 @@ function NumberList(props) {
 ```
 
 - key 값은 map 함수 내에서 지정해야 합니다
+
+---
+
+### 이벤트 처리
+
+```js
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isToggleOn: true };
+
+    // 콜백에서 `this`가 작동하려면 아래와 같이 바인딩 해주어야 합니다.
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState((prevState) => ({
+      isToggleOn: !prevState.isToggleOn,
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? "ON" : "OFF"}
+      </button>
+    );
+  }
+}
+
+ReactDOM.render(<Toggle />, document.getElementById("root"));
+```
+
+JSX 콜백 안에서 this의 의미에 대해 주의해야 합니다. JavaScript에서 클래스 메서드는 기본적으로 바인딩되어 있지 않습니다. this.handleClick을 바인딩하지 않고 onClick에 전달하였다면, 함수가 실제 호출될 때 this는 undefined가 됩니다.
+
+이는 React만의 특수한 동작이 아니며, JavaScript에서 함수가 작동하는 방식의 일부입니다. 일반적으로 onClick={this.handleClick}과 같이 뒤에 ()를 사용하지 않고 메서드를 참조할 경우, 해당 메서드를 바인딩 해야 합니다.
+
+bind를 호출하는 것이 불편하다면, 이를 해결할 수 있는 두 가지 방법이 있습니다. 실험적인 퍼블릭 클래스 필드 문법을 사용하고 있다면, 클래스 필드를 사용하여 콜백을 올바르게 바인딩할 수 있습니다.
+
+### 출처
+
+[https://ko.reactjs.org/docs/handling-events.html](https://ko.reactjs.org/docs/handling-events.html)
+
+### Form
+
+- 다중입력제어
+
+```js
+import React, { useState } from "react";
+
+const SimpleForm = () => {
+  // const [nickname, setNickName] = useState("");
+  // const [password, setPassword] = useState("");
+
+  const [userInputs, setUserInputs] = useState({
+    nickname: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setUserInputs({ ...userInputs, [e.target.name]: e.target.value });
+    // e.target.name === "nickname" ? setUserInputs(e.target.value) : setUserInputs(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    alert(
+      `nickname : ${userInputs.nickname}, password : ${userInputs.password}`
+    );
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>닉네임 : </label>
+      <input
+        type="text"
+        name="nickname"
+        onChange={handleChange}
+        value={userInputs.nickname}
+      ></input>
+      <label>패스워드 : </label>
+      <input
+        type="text"
+        name="password"
+        onChange={handleChange}
+        value={userInputs.password}
+      ></input>
+      <input type="submit" vlaue="제출"></input>
+    </form>
+  );
+};
+
+export default SimpleForm;
+```
+
+- `const [nickname, setNickName] = useState("");` 같은 형태로 코드를 짜다보면 여러 데이터를 다룰때 코드가 계속 늘어날 수 있기때문에
+
+```Js
+  const [userInputs, setUserInputs] = useState({
+    nickname: "",
+    password: "",
+  });
+```
+
+처럼 코드를 작성합니다.
+
+## 비제어 컴포넌트
+
+- 데이터를 변경할 수 있는 모든 방법에 대해 이벤트 핸들러를 작성하고 React 컴포넌트를 통해 모든 입력 상태를 연결해야 하기 때문에 때로는 제어 컴포넌트를 사용하는 게 지루할 수 있습니다. 특히 기존의 코드베이스를 React로 변경하고자 할 때나 React가 아닌 라이브러리와 React 애플리케이션을 통합하고자 할 때 짜증날 수 있습니다. 이러한 경우에 입력 폼을 구현하기 위한 대체 기술인 비제어 컴포넌트를 확인할 수 있습니다.
+
+- ref : DOM에 직접 접근할 수 있도록 하는 것
+
+```js
+import React, { useRef } from "react";
+
+const UnControlledForm = () => {
+  const inputRef = useRef();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(inputRef.current.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>nickname: </label>
+      <input type="text" name="nickname" ref={inputRef}></input>
+      <input type="submit" value="제출"></input>
+    </form>
+  );
+};
+
+export default UnControlledForm;
+```
