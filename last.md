@@ -686,7 +686,7 @@ C : 유닉스 운영 체제에서 사용하기위해 개발한 언어, 모든 �
   - Drop
   - Truncate
 
-- DML 데이터 조작어
+- DML 데이터 조작어 .
 
   - SELECT
   - INSERT
