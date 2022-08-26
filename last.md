@@ -702,7 +702,7 @@ C : 유닉스 운영 체제에서 사용하기위해 개발한 언어, 모든 �
   - INERSECT : 교집합
   - MINUS : 차집합
 
-- DCL 데이터 제어어
+- DCL데이터 제어어
 
   - GRANT
   - REVOKE
